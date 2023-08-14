@@ -39,3 +39,39 @@ def update_xoa_de_tai_by_id_controller(id: str):
 
 def get_nhom_thuc_tap_by_user_id_controller(id: str):
     return get_nhom_thuc_tap_by_user_id(id)
+
+def them_de_tai_thuc_tap_controller(ten: str, mota: str, isDeleted: int):
+    return them_de_tai_thuc_tap(ten, mota, isDeleted)
+
+def get_all_ky_thuc_tap_controller():
+    return get_all_ky_thuc_tap()
+
+def get_chi_tiet_ky_thuc_tap_by_id_controller(id: str):
+    return get_chi_tiet_ky_thuc_tap_by_id(id)
+
+def update_chi_tiet_ky_thuc_tap_by_id_controller(id: str, ngaybatdau: str, ngayketthuc: str, isDeleted: int):
+    return update_chi_tiet_ky_thuc_tap_by_id(id, ngaybatdau, ngayketthuc, isDeleted)
+
+def them_ky_thuc_tap_controller(ngaybatdau: str, ngayketthuc: str, isDeleted: int):
+    return them_ky_thuc_tap(ngaybatdau, ngayketthuc, isDeleted)
+
+def update_xoa_ky_thuc_tap_by_id_controller(id: str):
+    return update_xoa_ky_thuc_tap_by_id(id)
+
+def get_ds_nhom_thuc_tap_controller():
+    return get_ds_nhom_thuc_tap()
+
+def get_chi_tiet_nhom_thuc_tap_by_id_controller(id: str):
+    return get_chi_tiet_nhom_thuc_tap_by_id(id)
+
+def get_chi_tiet_chinh_sua_nhom_controller():
+    return get_chi_tiet_chinh_sua_nhom()
+
+def update_chi_tiet_nhom_thuc_tap_by_id_controller(id: str, kytt: str, nguoihd: str, detai: str, isDeleted: int):
+    return update_chi_tiet_nhom_thuc_tap_by_id(id, kytt, nguoihd, detai, isDeleted)
+
+def update_xoa_nhom_thuc_tap_by_id_controller(id: str):
+    return update_xoa_nhom_thuc_tap_by_id(id)
+
+def them_nhom_thuc_tap_controller(nguoihd: str, kytt: str, detai: str, isDeleted: int):
+    return them_nhom_thuc_tap(nguoihd, kytt, detai, isDeleted)

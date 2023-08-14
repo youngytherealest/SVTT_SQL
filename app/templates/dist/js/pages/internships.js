@@ -5,7 +5,7 @@ var Toast = Swal.mixin({
   timer: 3000,
 });
 
-let bangdsdetai = $("#bangdsdetai").DataTable({
+let bangdskythuctap = $("#bangdskythuctap").DataTable({
   paging: true,
   lengthChange: false,
   searching: true,
@@ -15,20 +15,28 @@ let bangdsdetai = $("#bangdsdetai").DataTable({
   responsive: true,
   ajax: {
     type: "GET",
-    url: "get_all_de_tai",
+    url: "get_all_ky_thuc_tap",
     dataSrc: "",
   },
   columns: [
     { data: "id" },
-    { data: "ten" },
-    { data: "mota" },
+    { data: "ngaybatdau",
+      render: function(data, type, row){
+        return moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+      }
+    },
+    { data: "ngayketthuc",
+      render: function(data, type, row){
+        return moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
+      }
+    },
     {
-      data: "xoa",
+      data: "thoihan",
       render: function (data, type, row) {
         if (data == 0) {
-          return '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đang sử dụng</span>';
+          return '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đang diễn ra</span>';
         } else {
-          return '<span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Ngưng sử dụng</span>';
+          return '<span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Đã kết thúc</span>';
         }
       },
     },
@@ -54,21 +62,17 @@ function clear_modal() {
   $("#modal_footer").empty();
 }
 // Sửa đề tài
-$("#bangdsdetai").on("click", "#editBtn", function () {
+$("#bangdskythuctap").on("click", "#editBtn", function () {
   let id = $(this).data("id");
   clear_modal();
   $.ajax({
     type: "GET",
-    url: "get_chi_tiet_de_tai_by_id?id=" + id,
+    url: "get_chi_tiet_ky_thuc_tap_by_id?id=" + id,
     success: function (res) {
-      $("#modal_title").text(res.ten);
-      $("#modal_body").append(
-        '<div class="form-group"><label for="modal_tendetai_input">Tên đề tài</label><input type="email" class="form-control" id="modal_tendetai_input" placeholder="Nhập tên đề tài" value="' +
-          res.ten +
-          '"></div><div class="form-group"><label for="modal_motadetai_input">Mô tả đề tài</label><textarea id="modal_motadetai_input" rows="10" class="form-control" placeholder="Nhập mô tả đề tài">' +
-          res.mota +
-          '</textarea></div><div class="form-check"><input type="checkbox" class="form-check-input" id="modal_hoatdong_check"><label class="form-check-label" for="modal_hoatdong_check">Sử dụng đề tài</label></div>'
-      );
+      $("#modal_title").text('Kỳ thực tập '+res.ngaybatdau);
+      html = '<div class="form-group"><label>Thời gian thực tập:</label><div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div><input type="text" class="form-control float-right" id="reservation"></div></div><script>$("#reservation").daterangepicker();</script><div class="form-check"><input type="checkbox" class="form-check-input" id="modal_hoatdong_check"><label class="form-check-label" for="modal_hoatdong_check">Sử dụng kỳ thực tập</label></div>';
+      
+      $("#modal_body").append(html);
       if (res.xoa == 0) {
         $("#modal_hoatdong_check").prop("checked", true);
       } else {
@@ -79,31 +83,33 @@ $("#bangdsdetai").on("click", "#editBtn", function () {
           res.id +
           '" id="modal_submit_btn"><i class="fa-solid fa-floppy-disk"></i> Lưu thay đổi</button>'
       );
+
       $("#modal_id").modal("show");
       // Tính năng lưu thay đổi
       $("#modal_submit_btn").click(function () {
         let id = $(this).data("id");
 
-        let ten = $("#modal_tendetai_input").val();
-        let mota = $("#modal_motadetai_input").val();
+        let dates = $("#reservation").val().split(' - ');
         let xoa = $("#modal_hoatdong_check").is(":checked");
         let isDeleted = xoa ? 0 : 1;
+        let ngaybatdau = moment(dates[0], 'MM/DD/YYYY').format('YYYY-MM-DD');
+        let ngayketthuc = moment(dates[1], 'MM/DD/YYYY').format('YYYY-MM-DD');
 
         $.ajax({
           type: "POST",
           url:
-            "update_chi_tiet_de_tai_by_id?id=" +
+            "update_chi_tiet_ky_thuc_tap_by_id?id=" +
             parseInt(id) +
-            "&ten=" +
-            ten +
-            "&mota=" +
-            mota +
+            "&ngaybatdau=" +
+            ngaybatdau +
+            "&ngayketthuc=" +
+            ngayketthuc +
             "&isDeleted=" +
             isDeleted,
           success: function (data) {
             if (data.status == "OK") {
               $("#modal_id").modal("hide");
-              bangdsdetai.ajax.reload();
+              bangdskythuctap.ajax.reload();
               Toast.fire({
                 icon: "success",
                 title: "Cập nhật thành công",
@@ -127,12 +133,12 @@ $("#bangdsdetai").on("click", "#editBtn", function () {
   });
 });
 
-// Xoá đề tài
-$("#bangdsdetai").on("click", "#deleteBtn", function () {
+// Xoá kỳ thực tập
+$("#bangdskythuctap").on("click", "#deleteBtn", function () {
   let id = $(this).data("id");
 
   Swal.fire({
-    title: "Bạn muốn xoá đề tài số " + id,
+    title: "Bạn muốn xoá kỳ thực tập số " + id,
     showDenyButton: false,
     showCancelButton: true,
     confirmButtonText: "Xoá",
@@ -142,13 +148,13 @@ $("#bangdsdetai").on("click", "#deleteBtn", function () {
     if (result.isConfirmed) {
       $.ajax({
         type: "POST",
-        url: "update_xoa_de_tai_by_id?id=" + parseInt(id),
+        url: "update_xoa_ky_thuc_tap_by_id?id=" + parseInt(id),
         success: function (res) {
           Toast.fire({
             icon: "success",
             title: "Đã xoá",
           });
-          bangdsdetai.ajax.reload();
+          bangdskythuctap.ajax.reload();
         },
         error: function (xhr, status, error) {
           Toast.fire({
@@ -162,11 +168,11 @@ $("#bangdsdetai").on("click", "#deleteBtn", function () {
 });
 
 // Modal thêm đề ài
-$("#themdetai_btn").click(function(){
+$("#themkythuctap_btn").click(function(){
   // Clear modal
   clear_modal();
-  $("#modal_title").text('Thêm đề tài');
-  html = '<div class="form-group"><label for="modal_tendetai_input">Tên đề tài</label><input type="email" class="form-control" id="modal_tendetai_input" placeholder="Nhập tên đề tài"></div><div class="form-group"><label for="modal_motadetai_input">Mô tả đề tài</label><textarea id="modal_motadetai_input" rows="10" class="form-control" placeholder="Nhập mô tả đề tài"></textarea></div><div class="form-check"><input type="checkbox" class="form-check-input" id="modal_hoatdong_check"><label class="form-check-label" for="modal_hoatdong_check">Sử dụng đề tài</label></div>';
+  $("#modal_title").text('Thêm kỳ thực tập');
+  html = '<div class="form-group"><label>Thời gian thực tập:</label><div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div><input type="text" class="form-control float-right" id="reservation"></div></div><script>$("#reservation").daterangepicker();</script><div class="form-check"><input type="checkbox" class="form-check-input" id="modal_hoatdong_check"><label class="form-check-label" for="modal_hoatdong_check">Sử dụng kỳ thực tập</label></div>';
   $("#modal_body").append(html);
   $("#modal_footer").append(
     '<button type="button" class="btn btn-primary" id="modal_submit_btn"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>'
@@ -174,25 +180,26 @@ $("#themdetai_btn").click(function(){
   $("#modal_id").modal('show');
   
   $("#modal_submit_btn").click(function(){
-    let ten = $("#modal_tendetai_input").val();
-    let mota = $("#modal_motadetai_input").val();
+    let dates = $("#reservation").val().split(' - ');
     let xoa = $("#modal_hoatdong_check").is(":checked");
     let isDeleted = xoa ? 0 : 1;
-  
+    let ngaybatdau = moment(dates[0], 'MM/DD/YYYY').format('YYYY-MM-DD');
+    let ngayketthuc = moment(dates[1], 'MM/DD/YYYY').format('YYYY-MM-DD');
+
     $.ajax({
       type: 'POST',
-      url: 'them_de_tai_thuc_tap?ten='+ten+'&mota='+mota+'&isDeleted='+isDeleted,
+      url: 'them_ky_thuc_tap?ngaybatdau='+ngaybatdau+'&ngayketthuc='+ngayketthuc+'&isDeleted='+isDeleted,
       success: function(res){
         Toast.fire({
           icon: "success",
-          title: "Đã thêm đề tài",
+          title: "Đã thêm kỳ thực tập",
         });
-        bangdsdetai.ajax.reload();
+        bangdskythuctap.ajax.reload();
       },
       error: function (xhr, status, error) {
         Toast.fire({
           icon: "error",
-          title: "Thêm đề tài không thành công",
+          title: "Thêm kỳ thực tập không thành công",
         });
       },
     });

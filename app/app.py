@@ -31,6 +31,14 @@ async def hosonguoihuongdan(request: Request, id: str):
 async def danhsachdetai(request: Request):
     return templates.TemplateResponse('projects.html', context={'request': request})
 
+@app.get('/danhsachkythuctap')
+async def danhsachkythuctap(request: Request):
+    return templates.TemplateResponse('internships.html', context={'request': request})
+
+@app.get('/danhsachnhomthuctap')
+async def danhsachnhomthuctap(request: Request):
+    return templates.TemplateResponse('groups.html', context={'request': request})
+
 @app.get('/get_so_luong_sinh_vien_theo_truong')
 async def get_so_luong_sinh_vien_theo_truong_route():
     return get_so_luong_sinh_vien_theo_truong_controller()
@@ -69,4 +77,59 @@ async def update_chi_tiet_de_tai_by_id_route(id: str, ten: str, mota: str, isDel
 @app.post('/update_xoa_de_tai_by_id')
 async def update_xoa_de_tai_by_id_route(id: str):
     result = update_xoa_de_tai_by_id_controller(id)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.post('/them_de_tai_thuc_tap')
+async def them_de_tai_thuc_tap_route(ten: str, mota: str, isDeleted: int):
+    result = them_de_tai_thuc_tap_controller(ten, mota, isDeleted)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.get('/get_all_ky_thuc_tap')
+async def get_all_ky_thuc_tap_route():
+    return JSONResponse(status_code=200, content=get_all_ky_thuc_tap_controller())
+
+@app.get('/get_chi_tiet_ky_thuc_tap_by_id')
+async def get_chi_tiet_ky_thuc_tap_by_id_route(id: str):
+    return JSONResponse(status_code=200, content=get_chi_tiet_ky_thuc_tap_by_id_controller(id))
+
+@app.post('/update_chi_tiet_ky_thuc_tap_by_id')
+async def update_chi_tiet_ky_thuc_tap_by_id_route(id: str, ngaybatdau: str, ngayketthuc: str, isDeleted: int):
+    result = update_chi_tiet_ky_thuc_tap_by_id_controller(id, ngaybatdau, ngayketthuc, isDeleted)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.post('/them_ky_thuc_tap')
+async def them_ky_thuc_tap_route(ngaybatdau: str, ngayketthuc: str, isDeleted: int):
+    result = them_ky_thuc_tap_controller(ngaybatdau, ngayketthuc, isDeleted)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.post('/update_xoa_ky_thuc_tap_by_id')
+async def update_xoa_ky_thuc_tap_by_id_route(id: str):
+    result = update_xoa_ky_thuc_tap_by_id_controller(id)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.get('/get_ds_nhom_thuc_tap')
+async def get_ds_nhom_thuc_tap_route():
+    return get_ds_nhom_thuc_tap_controller()
+
+@app.get('/get_chi_tiet_nhom_thuc_tap_by_id')
+async def get_chi_tiet_nhom_thuc_tap_by_id_route(id: str):
+    return get_chi_tiet_nhom_thuc_tap_by_id_controller(id)
+
+@app.get('/get_chi_tiet_chinh_sua_nhom')
+async def get_chi_tiet_chinh_sua_nhom_route():
+    return get_chi_tiet_chinh_sua_nhom_controller()
+
+@app.post('/update_chi_tiet_nhom_thuc_tap_by_id')
+async def update_chi_tiet_nhom_thuc_tap_by_id_route(id: str, kytt: str, nguoihd: str, detai: str, isDeleted: int):
+    result = update_chi_tiet_nhom_thuc_tap_by_id_controller(id, kytt, nguoihd, detai, isDeleted)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.post('/update_xoa_nhom_thuc_tap_by_id')
+async def update_xoa_nhom_thuc_tap_by_id_route(id: str):
+    result = update_xoa_nhom_thuc_tap_by_id_controller(id)
+    return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.post('/them_nhom_thuc_tap')
+async def them_nhom_thuc_tap_route(nguoihd: str, kytt: str, detai: str, isDeleted: int):
+    result = them_nhom_thuc_tap_controller(nguoihd, kytt, detai, isDeleted)
     return JSONResponse(status_code=200, content={'status': 'OK'})

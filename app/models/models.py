@@ -246,3 +246,17 @@ def get_chi_tiet_sinh_vien_da_danh_gia(id: str):
         return {'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'sdt': f'0{i[4]}', 'email': i[5], 'diachi': i[6], 'malop': i[7], 'khoa': i[8], 'nganh': i[9], 'truong': i[10], 'nguoihuongdan': i[11], 'ngaybatdau': i[12], 'tendetai': i[13], 'ythuckyluat_number': i[17], 'ythuckyluat_text': i[18], 'tuanthuthoigian_number': i[19], 'tuanthuthoigian_text': i[20], 'kienthuc_number': i[21], 'kienthuc_text': i[22], 'kynangnghe_number': i[23], 'kynangnghe_text': i[24], 'khanangdoclap_number': i[25], 'khanangdoclap_text': i[26], 'khanangnhom_number': i[27], 'khanangnhom_text': i[28], 'khananggiaiquyetcongviec_number': i[29], 'khananggiaiquyetcongviec_text': i[30], 'danhgiachung_number': i[31]}
     except Exception as e:
         return e
+    
+def get_ds_sinh_vien_by_username(username: str):
+    try:
+        result = cursor.execute("EXEC GetDSSVByNguoiHuongDanID ?", username)
+        return [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5], 'trangthai': i[6]} for i in result]
+    except Exception as e:
+        return e
+    
+def get_chi_tiet_danh_gia_sv_by_id(id: str):
+    try:
+        i = cursor.execute("EXEC GetChiTietDanhGiaSVByID ?", id).fetchone()
+        return {'id': i[0], 'ythuckyluat_number': i[3], 'ythuckyluat_text': i[4], 'tuanthuthoigian_text': i[5], 'tuanthuthoigian_number': i[6], 'kienthuc_text': i[7], 'kienthuc_number': i[8], 'kynangnghe_text': i[9], 'kynangnghe_number': i[10], 'khanangdoclap_text': i[11], 'khanangdoclap_number': i[12], 'khanangnhom_text': i[13], 'khanangnhom_number': i[14], 'khananggiaiquyetcongviec_text': i[15], 'khananggiaiquyetcongviec_number': i[16], 'danhgiachung_number': i[17]}
+    except Exception as e:
+        return e

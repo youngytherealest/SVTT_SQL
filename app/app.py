@@ -110,6 +110,19 @@ async def hosonguoihuongdan(request: Request, id: str, token: str = Cookie(None)
         profile = {'hoten': result[0], 'sdt': result[1], 'email': result[2], 'chucdanh': result[3], 'phong': result[4], 'zalo': result[5], 'facebook': result[6], 'github': result[7], 'avatar': result[8]}
         return templates.TemplateResponse('profile.html', context={'request': request, 'profile': profile, 'detai': detai})
 
+@app.get('/danhgiasinhvien')
+async def danhgiasinhvien(request: Request, token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                return templates.TemplateResponse('student_review.html', context={'request': request})
+                
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
 @app.get('/danhsachdetai')
 async def danhsachdetai(request: Request, token: str = Cookie(None)):
     if token:
@@ -421,6 +434,30 @@ async def get_chi_tiet_sinh_vien_by_id_route(id: str, token: str = Cookie(None))
                     result = get_chi_tiet_sinh_vien_da_danh_gia_controller(id)
                 result['trangthai'] = condition['trangthai']
                 return JSONResponse(status_code=200, content=result)
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
+@app.get('/get_ds_sinh_vien_by_username')
+async def get_ds_sinh_vien_by_username_route(token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                return JSONResponse(status_code=200, content=get_ds_sinh_vien_by_username_controller(username))
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
+@app.get('/get_chi_tiet_danh_gia_sv_by_id')
+async def get_chi_tiet_danh_gia_sv_by_id_route(id: str, token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                return get_chi_tiet_danh_gia_sv_by_id_controller(id=id)
         except jwt.PyJWTError:
             pass
     return RedirectResponse('/login')

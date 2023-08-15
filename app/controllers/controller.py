@@ -93,3 +93,9 @@ def get_chi_tiet_sinh_vien_da_danh_gia_controller(id: str):
 
 def verify_user_controller(username: str, password: str):
     return verify_user(username, password)
+
+def get_ds_sinh_vien_by_username_controller(username: str):
+    return get_ds_sinh_vien_by_username(username)
+
+def get_chi_tiet_danh_gia_sv_by_id_controller(id: str):
+    return get_chi_tiet_danh_gia_sv_by_id(id)

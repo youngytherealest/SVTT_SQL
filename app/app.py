@@ -50,7 +50,7 @@ async def get_so_luong_sinh_vien_theo_nganh_route():
 @app.get('/get_all_sinh_vien')
 async def get_all_sinh_vien_route():
     result = get_all_sinh_vien_controller()
-    ds: list = [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5]} for i in result]
+    ds: list = [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5], 'trangthai': i[6]} for i in result]
     return JSONResponse(status_code=200, content=ds)
 
 @app.get('/get_user_info_by_username')
@@ -133,3 +133,16 @@ async def update_xoa_nhom_thuc_tap_by_id_route(id: str):
 async def them_nhom_thuc_tap_route(nguoihd: str, kytt: str, detai: str, isDeleted: int):
     result = them_nhom_thuc_tap_controller(nguoihd, kytt, detai, isDeleted)
     return JSONResponse(status_code=200, content={'status': 'OK'})
+
+@app.get('/get_chi_tiet_sinh_vien_by_id')
+async def get_chi_tiet_sinh_vien_by_id_route(id: str):
+    condition = get_trang_thai_sinh_vien_by_id_controller(id)
+    result: dict = {}
+    if condition['trangthai']==0:
+        result = get_chi_tiet_sinh_vien_chua_co_nhom_controller(id)
+    elif condition['trangthai'] == 1:
+        result = get_chi_tiet_sinh_vien_da_co_nhom_controller(id)
+    else:
+        result = get_chi_tiet_sinh_vien_da_danh_gia_controller(id)
+    result['trangthai'] = condition['trangthai']
+    return JSONResponse(status_code=200, content=result)

@@ -75,3 +75,18 @@ def update_xoa_nhom_thuc_tap_by_id_controller(id: str):
 
 def them_nhom_thuc_tap_controller(nguoihd: str, kytt: str, detai: str, isDeleted: int):
     return them_nhom_thuc_tap(nguoihd, kytt, detai, isDeleted)
+
+def get_chi_tiet_sinh_vien_by_id_controller(id: str):
+    return get_chi_tiet_sinh_vien_by_id(id)
+
+def get_trang_thai_sinh_vien_by_id_controller(id: str):
+    return get_trang_thai_sinh_vien_by_id(id)
+
+def get_chi_tiet_sinh_vien_chua_co_nhom_controller(id: str):
+    return get_chi_tiet_sinh_vien_chua_co_nhom(id)
+
+def get_chi_tiet_sinh_vien_da_co_nhom_controller(id: str):
+    return get_chi_tiet_sinh_vien_da_co_nhom(id)
+
+def get_chi_tiet_sinh_vien_da_danh_gia_controller(id: str):
+    return get_chi_tiet_sinh_vien_da_danh_gia(id)

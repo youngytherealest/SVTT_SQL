@@ -8,22 +8,147 @@
                 </button>
             </div>
             <div class="modal-body" id="modal_body">
-                <div class="form-group" data-select2-id="51">
-                    <label>Kỳ thực tập</label>
-                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                    <option selected="selected" data-select2-id="3">Alabama</option>
-                    <option data-select2-id="53">Alaska</option>
-                    <option data-select2-id="54">California</option>
-                    <option data-select2-id="55">Delaware</option>
-                    <option data-select2-id="56">Tennessee</option>
-                    <option data-select2-id="57">Texas</option>
-                    <option data-select2-id="58">Washington</option>
-                    </select><span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="2" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-tfqh-container"><span class="select2-selection__rendered" id="select2-tfqh-container" role="textbox" aria-readonly="true" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="modal_hoatdong_check">
-                    <label class="form-check-label" for="modal_hoatdong_check">Sử dụng nhóm</label>
-                </div>
+                <table class="table" id="thongtinsinhvien">
+                    <tr>
+                        <td>Họ tên</td>
+                        <td>'+res.hoten+'</td>
+                    </tr>
+                    <tr>
+                        <td>MSSV</td>
+                        <td>'+res.mssv+'</td>
+                    </tr>
+                    <tr>
+                        <td>Giới tính</td>
+                        <td>'+res.gioitinh+'</td>
+                    </tr>
+                    <tr>
+                        <td>SĐT</td>
+                        <td>'+res.sdt+'</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>'+res.email+'</td>
+                    </tr>
+                    <tr>
+                        <td>Điạ chỉ</td>
+                        <td>'+res.diachi+'</td>
+                    </tr>
+                    <tr>
+                        <td>Mã lớp</td>
+                        <td>'+res.malop+'</td>
+                    </tr>
+                    <tr>
+                        <td>Khoá</td>
+                        <td>'+res.khoa+'</td>
+                    </tr>
+                    <tr>
+                        <td>Ngành</td>
+                        <td>'+res.nganh+'</td>
+                    </tr>
+                    <tr>
+                        <td>Trường</td>
+                        <td>'+res.truong+'</td>
+                    </tr>
+                    <tr>
+                        <td>Kỳ thực tập</td>
+                        <td>'+res.ngaybatdau+'</td>
+                    </tr>
+                    <tr>
+                        <td>Đề tài</td>
+                        <td>'+res.tendetai+'</td>
+                    </tr>
+                    <tr>
+                        <td>Người hướng dẫn</td>
+                        <td>'+res.nguoihuongdan+'</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Ý thức kỷ luật
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.ythuckyluat_number+'
+                            </span>
+                            '+res.ythuckyluat_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tuân thủ thời gian
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.tuanthuthoigian_number+'
+                            </span>
+                            '+res.tuanthuthoigian_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Kiến thức
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.kienthuc_number+'
+                            </span>
+                            '+res.kienthuc_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Kỷ năng nghề
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.kynangnghe_number+'
+                            </span>
+                            '+res.kynangnghe_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Khả năng làm việc độc lập
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.khanangdoclap_number+'
+                            </span>
+                            '+res.khanangdoclap_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Khả năng làm việc nhóm
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.khanangnhom_number+'
+                            </span>
+                            '+res.khanangnhom_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Khả năng giải quyết công việc
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.khananggiaiquyetcongviec_number+'
+                            </span>
+                            '+res.khananggiaiquyetcongviec_text+'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Đánh giá chung
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                '+res.danhgiachung_number+'
+                            </span>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="modal-footer" id="modal_footer">
             </div>

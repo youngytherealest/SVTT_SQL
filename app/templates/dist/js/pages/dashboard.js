@@ -121,6 +121,13 @@ $(function () {
     },
   });
 
+  // Clear modal
+  let clearmodal = function clear_modal() {
+    $("#modal_title").empty();
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+  }
+
   $.ajax({
     type: "GET",
     url: "get_so_luong_sinh_vien_theo_nganh",
@@ -168,7 +175,7 @@ $(function () {
     },
   });
 
-  $("#dashboard_bangdssv").DataTable({
+let bangdssv = $("#dashboard_bangdssv").DataTable({
     paging: true,
     lengthChange: false,
     searching: true,
@@ -188,15 +195,54 @@ $(function () {
       { data: "nganh" },
       { data: "truong" },
       {
+        data: "trangthai",
+        render: function(data, type, row){
+          if(data==0){
+            return '<span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Chưa có nhóm</span>';
+          }else if(data==1){
+            return '<span class="badge badge-warning"><i class="fa-solid fa-circle-exclamation"></i> Chưa đánh giá</span>';
+          }else{
+            return '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đã đánh giá</span>';
+          }
+        }
+      },
+      {
         data: "id",
         render: function (data, type, row) {
           return (
-            '<a href="thongtinsinhvien?id=' +
+            '<a data-id="' +
             data +
-            '" class="btn btn-sm" id="editBtn" style="color: green; text-align: center; "><i class="fa-solid fa-eye"></i></a>'
+            '" class="btn btn-sm" id="viewBtn"  style="color: green; text-align: center; "><i class="fa-solid fa-eye"></i></a>'
           );
         },
       },
     ],
   });
+});
+
+$("#dashboard_bangdssv").on('click', '#viewBtn', function(){
+  let id = $(this).data('id');
+  // Clear modal
+  $("#modal_title").empty();
+  $("#modal_body").empty();
+  $("#modal_footer").empty();
+  $.ajax({
+    type: 'GET',
+    url: 'get_chi_tiet_sinh_vien_by_id?id=' + id,
+    success: function(res){
+      $('.modal-dialog').addClass('modal-lg');
+      $('#modal_title').text('Thông tin sinh viên');
+      let html='';
+
+      if(res.trangthai==0){
+        html='<table class="table" id="thongtinsinhvien"><tr>    <td>Họ tên</td>    <td>'+res.hoten+'</td></tr><tr>    <td>MSSV</td>    <td>'+res.mssv+'</td></tr><tr>    <td>Giới tính</td>    <td>'+res.gioitinh+'</td></tr><tr>    <td>SĐT</td>    <td>'+res.sdt+'</td></tr><tr>    <td>Email</td>    <td>'+res.email+'</td></tr><tr>    <td>Điạ chỉ</td>    <td>'+res.diachi+'</td></tr><tr>    <td>Mã lớp</td>    <td>'+res.malop+'</td></tr><tr>    <td>Khoá</td>    <td>'+res.khoa+'</td></tr><tr>    <td>Ngành</td>    <td>'+res.nganh+'</td></tr><tr>    <td>Trường</td>    <td>'+res.truong+'</td></tr></table>';
+      }else if(res.trangthai==1){
+        html='<table class="table" id="thongtinsinhvien"><tr>    <td>Họ tên</td>    <td>'+res.hoten+'</td></tr><tr>    <td>MSSV</td>    <td>'+res.mssv+'</td></tr><tr>    <td>Giới tính</td>    <td>'+res.gioitinh+'</td></tr><tr>    <td>SĐT</td>    <td>'+res.sdt+'</td></tr><tr>    <td>Email</td>    <td>'+res.email+'</td></tr><tr>    <td>Điạ chỉ</td>    <td>'+res.diachi+'</td></tr><tr>    <td>Mã lớp</td>    <td>'+res.malop+'</td></tr><tr>    <td>Khoá</td>    <td>'+res.khoa+'</td></tr><tr>    <td>Ngành</td>    <td>'+res.nganh+'</td></tr><tr>    <td>Trường</td>    <td>'+res.truong+'</td></tr><tr>    <td>Kỳ thực tập</td>    <td>'+moment(res.ngaybatdau, 'YYYY-MM-DD').format('DD/MM/YYYY')+'</td></tr><tr>    <td>Đề tài</td>    <td>'+res.tendetai+'</td></tr><tr>    <td>Người hướng dẫn</td>    <td>'+res.nguoihuongdan+'</td></tr></table>';
+      }else{
+        html = '<table class="table" id="thongtinsinhvien"> <tr> <td>Họ tên</td> <td>'+res.hoten+'</td> </tr> <tr> <td>MSSV</td> <td>'+res.mssv+'</td> </tr> <tr> <td>Giới tính</td> <td>'+res.gioitinh+'</td> </tr> <tr> <td>SĐT</td> <td>'+res.sdt+'</td> </tr> <tr> <td>Email</td> <td>'+res.email+'</td> </tr> <tr> <td>Điạ chỉ</td> <td>'+res.diachi+'</td> </tr> <tr> <td>Mã lớp</td> <td>'+res.malop+'</td> </tr> <tr> <td>Khoá</td> <td>'+res.khoa+'</td> </tr> <tr> <td>Ngành</td> <td>'+res.nganh+'</td> </tr> <tr> <td>Trường</td> <td>'+res.truong+'</td> </tr> <tr> <td>Kỳ thực tập</td> <td>'+res.ngaybatdau+'</td> </tr> <tr> <td>Đề tài</td> <td>'+res.tendetai+'</td> </tr> <tr> <td>Người hướng dẫn</td> <td>'+res.nguoihuongdan+'</td> </tr> <tr> <td> Ý thức kỷ luật </td> <td> <span class="badge badge-primary"> '+res.ythuckyluat_number+' </span> '+res.ythuckyluat_text+' </td> </tr> <tr> <td> Tuân thủ thời gian </td> <td> <span class="badge badge-primary"> '+res.tuanthuthoigian_number+' </span> '+res.tuanthuthoigian_text+' </td> </tr> <tr> <td> Kiến thức </td> <td> <span class="badge badge-primary"> '+res.kienthuc_number+' </span> '+res.kienthuc_text+' </td> </tr> <tr> <td> Kỷ năng nghề </td> <td> <span class="badge badge-primary"> '+res.kynangnghe_number+' </span> '+res.kynangnghe_text+' </td> </tr> <tr> <td> Khả năng làm việc độc lập </td> <td> <span class="badge badge-primary"> '+res.khanangdoclap_number+' </span> '+res.khanangdoclap_text+' </td> </tr> <tr> <td> Khả năng làm việc nhóm </td> <td> <span class="badge badge-primary"> '+res.khanangnhom_number+' </span> '+res.khanangnhom_text+' </td> </tr> <tr> <td> Khả năng giải quyết công việc </td> <td> <span class="badge badge-primary"> '+res.khananggiaiquyetcongviec_number+' </span> '+res.khananggiaiquyetcongviec_text+' </td> </tr> <tr> <td> Đánh giá chung </td> <td> <span class="badge badge-primary"> '+res.danhgiachung_number+' </span> </td> </tr> </table>';
+      }
+      $('#modal_body').append(html);
+      $('#modal_id').modal('show');
+    }
+  })
 });

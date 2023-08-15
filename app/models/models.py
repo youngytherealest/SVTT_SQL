@@ -55,6 +55,13 @@ def get_so_luong_sinh_vien_theo_nganh():
     except Exception as e:
         return e
 
+def get_trang_thai_sinh_vien_by_id(id: str):
+    try:
+        i = cursor.execute("EXEC GetTrangThaiSinhVienByID ?", id).fetchone()
+        return {'id': i[0], 'trangthai': i[6]}
+    except Exception as e:
+        return e
+
 def get_user_info_by_username(username: str):
     try:
         result = cursor.execute("EXEC GetUserInfo ?", username)
@@ -197,5 +204,33 @@ def them_nhom_thuc_tap(nguoihd: str, kytt: str, detai: str, isDeleted: int):
         result = cursor.execute("EXEC InsertNhomThucTap ?, ?, ?, ?", nguoihd, kytt, detai, isDeleted)
         conn.commit()
         return True
+    except Exception as e:
+        return e
+
+def get_chi_tiet_sinh_vien_by_id(id: str):
+    try:
+        i = cursor.execute("EXEC GetThongTinChiTietSVByID ?", id).fetchone()
+        return {'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'nam' if i[3]==1 else 'nữ', 'sdt': f'0{i[4]}', 'email': i[5], 'diachi': i[6], 'malop': i[7], 'khoa': i[8], 'nganh': i[9], 'truong': i[10], 'tendetai': i[12], 'ngaybatdau': i[13], 'nguoihuongdan': i[14]}
+    except Exception as e:
+        return e
+    
+def get_chi_tiet_sinh_vien_chua_co_nhom(id: str):
+    try:
+        i = cursor.execute("EXEC GetThongTinChiTietSVChuaCoNhomByID ?", id).fetchone()
+        return {'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'nam' if i[3]==1 else 'nữ', 'sdt': f'0{i[4]}', 'email': i[5], 'diachi': i[6], 'malop': i[7], 'khoa': i[8], 'nganh': i[9], 'truong': i[10]}
+    except Exception as e:
+        return e
+    
+def get_chi_tiet_sinh_vien_da_co_nhom(id: str):
+    try:
+        i = cursor.execute("EXEC GetThongTinChiTietSVDaCoNhomByID ?", id).fetchone()
+        return {'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'nam' if i[3]==1 else 'nữ', 'sdt': f'0{i[4]}', 'email': i[5], 'diachi': i[6], 'malop': i[7], 'khoa': i[8], 'nganh': i[9], 'truong': i[10], 'nguoihuongdan': i[11], 'ngaybatdau': i[12], 'tendetai': i[13]}
+    except Exception as e:
+        return e
+    
+def get_chi_tiet_sinh_vien_da_danh_gia(id: str):
+    try:
+        i = cursor.execute("EXEC GetThongTinChiTietSVDaDanhGiaByID ?", id).fetchone()
+        return {'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'nam' if i[3]==1 else 'nữ', 'sdt': f'0{i[4]}', 'email': i[5], 'diachi': i[6], 'malop': i[7], 'khoa': i[8], 'nganh': i[9], 'truong': i[10], 'nguoihuongdan': i[11], 'ngaybatdau': i[12], 'tendetai': i[13], 'ythuckyluat_number': i[17], 'ythuckyluat_text': i[18], 'tuanthuthoigian_number': i[19], 'tuanthuthoigian_text': i[20], 'kienthuc_number': i[21], 'kienthuc_text': i[22], 'kynangnghe_number': i[23], 'kynangnghe_text': i[24], 'khanangdoclap_number': i[25], 'khanangdoclap_text': i[26], 'khanangnhom_number': i[27], 'khanangnhom_text': i[28], 'khananggiaiquyetcongviec_number': i[29], 'khananggiaiquyetcongviec_text': i[30], 'danhgiachung_number': i[31]}
     except Exception as e:
         return e

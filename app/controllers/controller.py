@@ -90,3 +90,6 @@ def get_chi_tiet_sinh_vien_da_co_nhom_controller(id: str):
 
 def get_chi_tiet_sinh_vien_da_danh_gia_controller(id: str):
     return get_chi_tiet_sinh_vien_da_danh_gia(id)
+
+def verify_user_controller(username: str, password: str):
+    return verify_user(username, password)

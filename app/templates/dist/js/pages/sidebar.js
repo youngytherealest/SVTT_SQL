@@ -1,14 +1,33 @@
+function getTokenFromCookie(name) {
+  let cookies = document.cookie.split("; ");
+  for (let cookie of cookies) {
+      let [cookieName, cookieValue] = cookie.split("=");
+      if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+      }
+  }
+  return null;
+}
+
+let token = getTokenFromCookie("token");
+if (!token){
+  $("#sidebar").empty();
+}
+
 $.ajax({
   type: "GET",
-  url: "get_user_info_by_username?username=" + localStorage.getItem("username"),
+  url: "get_user_info_by_username?token=" + token,
   success: function (res) {
     $("#dashboard_user_fullname").text(res.hoten);
     $("#dashboard_avatar_url").prop("src", res.avatar);
     $("#dashboard_user_fullname").prop(
       "href",
-      "hosonguoihuongdan?id=" + localStorage.getItem("username")
+      "hosonguoihuongdan?id=" + token
     );
   },
+  error: function(xhr, status, error){
+    $("#sidebar").empty();
+  }
 });
 
 function active_nav_link() {

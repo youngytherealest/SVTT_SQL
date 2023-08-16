@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Request, Depends, HTTPException, Cookie
 from fastapi.security import OAuth2PasswordBearer
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import Response, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-from typing import Optional
 from hashlib import sha3_256
 import jwt
 import datetime
@@ -502,6 +501,26 @@ async def get_id_nhom_by_sv_id_route(id: str, token: str = Cookie(None)):
             if username:
                 result = get_id_nhom_by_sv_id_controller(id)
                 return JSONResponse(status_code=200, content={'id': result})
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
+@app.get('/xuat_danh_gia')
+async def xuat_danh_gia(id: str, token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            tencty: str = 'Trung tâm CNTT - VNPT Vĩnh Long'
+            if username:
+                i = xuat_phieu_danh_gia_controller(id)
+                r = export(sv_hoten=i['hoten'], sv_lop=i['malop'], tt_donvi=tencty, tt_nguoihuongdan=i['nguoihuongdan'], dg_ythuckyluat_number=i['ythuckyluat_number'], dg_ythuckyluat_text=i['ythuckyluat_text'], dg_tuanthuthoigian_number=i['tuanthuthoigian_number'], dg_tuanthuthoigian_text=i['tuanthuthoigian_text'], dg_kienthuc_number=i['kienthuc_number'], dg_kienthuc_text=i['kienthuc_text'], dg_kynangnghe_number=i['kynangnghe_number'], dg_kynangnghe_text=i['kynangnghe_text'], dg_khanangdoclap_number=i['khanangdoclap_number'], dg_khanangdoclap_text=i['khanangdoclap_text'], dg_khanangnhom_number=i['khanangnhom_number'], dg_khanangnhom_text=i['khanangnhom_text'], dg_khananggiaiquyetcongviec_number=i['khananggiaiquyetcongviec_number'], dg_khananggiaiquyetcongviec_text=i['khananggiaiquyetcongviec_text'], dg_danhgiachung_number=i['danhgiachung_number'])
+                if r:
+                    with open(r, 'rb') as f:
+                        docx_content = f.read()
+                    return Response(content=docx_content, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document", headers={"Content-Disposition": f"attachment; filename={str(i['mssv'])}.docx"})
+                else: 
+                    return JSONResponse(status_code=400, content={'status': 'ERR'})
         except jwt.PyJWTError:
             pass
     return RedirectResponse('/login')

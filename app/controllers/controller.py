@@ -1,4 +1,5 @@
 from ..models.models import *
+from ..utils.export_report import export
 
 def insert_sinh_vien_controller(MSSV, HoTen: str, GioiTinh: int, SDT: str, Email: str, DiaChi: str, MaLop: str, Truong: str, Nganh: str, Khoa: int) -> bool:
     result = insert_sinh_vien(MSSV, HoTen, GioiTinh, SDT, Email, DiaChi, MaLop, Truong, Nganh, Khoa)
@@ -105,3 +106,7 @@ def update_danh_gia_sv_by_id_controller(sinhvienid: str, nhomid: int, ythuckylua
 
 def get_id_nhom_by_sv_id_controller(id: str):
     return get_id_nhom_by_sv_id(id)
+
+def xuat_phieu_danh_gia_controller(id: str):
+    result = get_chi_tiet_sinh_vien_da_danh_gia(id)
+    return result

@@ -40,7 +40,9 @@ let bangdssv = $("#dashboard_bangdssv").DataTable({
         return (
           '<a class="btn btn-info btn-sm" id="editBtn" data-id="' +
           data +
-          '"><i class="fas fa-pencil-alt"></i></a>'
+          '"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-success btn-sm" id="downloadBtn" data-id="' +
+          data +
+          '"><i class="fa-solid fa-download"></i></a>'
         );
       },
     },
@@ -175,4 +177,10 @@ $("#dashboard_bangdssv").on("click", "#editBtn", function () {
       });
     },
   });
+});
+
+$("#dashboard_bangdssv").on("click", "#downloadBtn", function () {
+  let id = $(this).data("id");
+
+  window.location.href='/xuat_danh_gia?id='+id;
 });

@@ -48,7 +48,7 @@ class DanhGiaSVByID(BaseModel):
 
 SECRET_KEY = "BN3298"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60*24
+ACCESS_TOKEN_EXPIRE_MINUTES = 60*6
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def verify_user_route(credentials: UserCredentials):

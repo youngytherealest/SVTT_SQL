@@ -257,6 +257,20 @@ def get_ds_sinh_vien_by_username(username: str):
 def get_chi_tiet_danh_gia_sv_by_id(id: str):
     try:
         i = cursor.execute("EXEC GetChiTietDanhGiaSVByID ?", id).fetchone()
-        return {'id': i[0], 'ythuckyluat_number': i[3], 'ythuckyluat_text': i[4], 'tuanthuthoigian_text': i[5], 'tuanthuthoigian_number': i[6], 'kienthuc_text': i[7], 'kienthuc_number': i[8], 'kynangnghe_text': i[9], 'kynangnghe_number': i[10], 'khanangdoclap_text': i[11], 'khanangdoclap_number': i[12], 'khanangnhom_text': i[13], 'khanangnhom_number': i[14], 'khananggiaiquyetcongviec_text': i[15], 'khananggiaiquyetcongviec_number': i[16], 'danhgiachung_number': i[17]}
+        return {'ythuckyluat_number': i[3], 'ythuckyluat_text': i[4], 'tuanthuthoigian_number': i[5], 'tuanthuthoigian_text': i[6], 'kienthuc_number': i[7], 'kienthuc_text': i[8], 'kynangnghe_number': i[9], 'kynangnghe_text': i[10], 'khanangdoclap_number': i[11], 'khanangdoclap_text': i[12], 'khanangnhom_number': i[13], 'khanangnhom_text': i[14], 'khananggiaiquyetcongviec_number': i[15], 'khananggiaiquyetcongviec_text': i[16], 'danhgiachung_number': i[17]}
+    except Exception as e:
+        return e
+    
+def update_danh_gia_sv_by_id(sinhvienid: str, nhomid: int, ythuckyluat_number: float, ythuckyluat_text: str, tuanthuthoigian_number: float, tuanthuthoigian_text: str, kienthuc_number: float, kienthuc_text: str, kynangnghe_number: float, kynangnghe_text: str, khanangdoclap_number: float, khanangdoclap_text: str, khanangnhom_number: float, khanangnhom_text: str, khananggiaiquyetcongviec_number: float, khananggiaiquyetcongviec_text: str, danhgiachung_number: float):
+    try:
+        result = cursor.execute("EXEC UpdateDanhGiaSVByID ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?", sinhvienid, nhomid, ythuckyluat_number, ythuckyluat_text, tuanthuthoigian_number, tuanthuthoigian_text, kienthuc_number, kienthuc_text, kynangnghe_number, kynangnghe_text, khanangdoclap_number, khanangdoclap_text, khanangnhom_number, khanangnhom_text, khananggiaiquyetcongviec_number, khananggiaiquyetcongviec_text, danhgiachung_number)
+        return True
+    except Exception as e:
+        return e
+    
+def get_id_nhom_by_sv_id(id: str):
+    try:
+        i = cursor.execute("EXEC GetIDNhomBySVID ?", id).fetchone()
+        return int(i[0])
     except Exception as e:
         return e

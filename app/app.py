@@ -28,6 +28,24 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class DanhGiaSVByID(BaseModel):
+    id: str
+    ythuckyluat_number: float
+    ythuckyluat_text: str
+    tuanthuthoigian_number: float
+    tuanthuthoigian_text: str
+    kienthuc_number: float
+    kienthuc_text: str
+    kynangnghe_number: float
+    kynangnghe_text: str
+    khanangdoclap_number: float
+    khanangdoclap_text: str
+    khanangnhom_number: float
+    khanangnhom_text: str
+    khananggiaiquyetcongviec_number: float
+    khananggiaiquyetcongviec_text: str
+    danhgiachung_number: float
+
 SECRET_KEY = "BN3298"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60*24
@@ -458,6 +476,32 @@ async def get_chi_tiet_danh_gia_sv_by_id_route(id: str, token: str = Cookie(None
             username = payload.get("sub")
             if username:
                 return get_chi_tiet_danh_gia_sv_by_id_controller(id=id)
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
+@app.post('/update_danh_gia_sv_by_id')
+async def update_danh_gia_sv_by_id_route(sinhvienid: str, nhomid: int, ythuckyluat_number: float, ythuckyluat_text: str, tuanthuthoigian_number: float, tuanthuthoigian_text: str, kienthuc_number: float, kienthuc_text: str, kynangnghe_number: float, kynangnghe_text: str, khanangdoclap_number: float, khanangdoclap_text: str, khanangnhom_number: float, khanangnhom_text: str, khananggiaiquyetcongviec_number: float, khananggiaiquyetcongviec_text: str, danhgiachung_number: float, token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                result = update_danh_gia_sv_by_id_controller(sinhvienid, nhomid, ythuckyluat_number, ythuckyluat_text, tuanthuthoigian_number, tuanthuthoigian_text, kienthuc_number, kienthuc_text, kynangnghe_number, kynangnghe_text, khanangdoclap_number, khanangdoclap_text, khanangnhom_number, khanangnhom_text, khananggiaiquyetcongviec_number, khananggiaiquyetcongviec_text, danhgiachung_number)
+                return JSONResponse(status_code=200, content={'status': 'OK'})
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
+@app.get('/get_id_nhom_by_sv_id')
+async def get_id_nhom_by_sv_id_route(id: str, token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                result = get_id_nhom_by_sv_id_controller(id)
+                return JSONResponse(status_code=200, content={'id': result})
         except jwt.PyJWTError:
             pass
     return RedirectResponse('/login')

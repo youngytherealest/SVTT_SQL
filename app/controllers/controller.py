@@ -108,5 +108,8 @@ def get_id_nhom_by_sv_id_controller(id: str):
     return get_id_nhom_by_sv_id(id)
 
 def xuat_phieu_danh_gia_controller(id: str):
-    result = get_chi_tiet_sinh_vien_da_danh_gia(id)
-    return result
+    try:
+        result = get_chi_tiet_sinh_vien_da_danh_gia(id)
+        return result
+    except Exception as e:
+        return e

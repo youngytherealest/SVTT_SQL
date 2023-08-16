@@ -105,7 +105,7 @@ def update_chi_tiet_de_tai_by_id(id: str, ten: str, mota: str, isDeleted: int):
     
 def update_xoa_de_tai_by_id(id: str):
     try:
-        result = cursor.execute("EXEC UpdateXoaDeTaiByID ?, ?", id, 2)
+        result = cursor.execute("EXEC UpdateXoaDeTaiByID ?", id)
         conn.commit()
         return True
     except Exception as e:
@@ -160,7 +160,7 @@ def them_ky_thuc_tap(ngaybatdau: str, ngayketthuc: str, isDeleted: int):
     
 def update_xoa_ky_thuc_tap_by_id(id: str):
     try:
-        result = cursor.execute("EXEC UpdateXoaKyThucTapByID ?, ?", id, 2)
+        result = cursor.execute("EXEC UpdateXoaKyThucTapByID ?", id)
         conn.commit()
         return True
     except Exception as e:
@@ -205,7 +205,7 @@ def update_chi_tiet_nhom_thuc_tap_by_id(id: str, kytt: str, nguoihd: str, detai:
     
 def update_xoa_nhom_thuc_tap_by_id(id: str):
     try:
-        result = cursor.execute("EXEC UpdateXoaNhomThucTapByID ?, ?", id, 2)
+        result = cursor.execute("EXEC UpdateXoaNhomThucTapByID ?", id)
         conn.commit()
         return True
     except Exception as e:

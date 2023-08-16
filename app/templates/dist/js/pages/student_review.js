@@ -181,6 +181,17 @@ $("#dashboard_bangdssv").on("click", "#editBtn", function () {
 
 $("#dashboard_bangdssv").on("click", "#downloadBtn", function () {
   let id = $(this).data("id");
-
-  window.location.href='/xuat_danh_gia?id='+id;
+  $.ajax({
+    type: 'GET',
+    url: '/xuat_danh_gia?id='+id,
+    success: function(res){
+      window.location.href='/xuat_danh_gia?id='+id;
+    },
+    error: function(xhr, status, error){
+      Toast.fire({
+        icon: "warning",
+        title: "Sinh viên chưa có đánh giá",
+      });
+    }
+  });
 });

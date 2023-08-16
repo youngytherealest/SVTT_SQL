@@ -59,7 +59,7 @@ def export(sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg
 
         os.makedirs('DOCX', exist_ok=True)
         # Lưu file docx đã được mail merge (không bắt buộc, chỉ cần nếu bạn muốn lưu phiên bản đã merge)
-        output_docx = os.path.join("DOCX", f"{sv_hoten}.docx")
+        output_docx = os.path.join("DOCX", f"{sv_hoten}_{sv_lop}.docx")
         document.write(output_docx)
 
         # Chuyển đổi file docx đã merge thành file pdf

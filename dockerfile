@@ -7,7 +7,7 @@ WORKDIR /app
 # Sao chép tất cả các file trong thư mục hiện tại vào thư mục /app trên Docker
 COPY . /app
 # Cài đặt poppler cho thư viện pdf2image
-RUN apt-get update && apt-get install msodbcsql17
+RUN apt-get update && apt-get install -y msodbcsql17
 
 # Cài đặt các gói phụ thuộc để chạy ứng dụng
 RUN pip install --no-cache-dir --upgrade pip && \

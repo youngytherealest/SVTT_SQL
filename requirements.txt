@@ -2,3 +2,4 @@ fastapi
 uvicorn
 pyjwt
 pyodbc
+docx-mailmerge

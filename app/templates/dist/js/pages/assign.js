@@ -154,8 +154,10 @@ $("#dsnhomdacoviec").on('change', function(){
         success: function(res){
             let html = '';
             for (var i = res.length -1; i >= 0; i--){
-                html += '<div class="time-label"><span class="bg-success" id="tuan">Tuần '+(i+1)+'</span></div>';
-                html += '<div><i class="fas fa-envelope bg-primary"></i><div class="timeline-item"><h3 class="timeline-header"><b id="ngay">'+res[i]['tungaytuan']+' - '+res[i]['denngaytuan']+'</b></h3><div class="timeline-body" id="congviec">'+res[i]['congviectuan']+'</div><div class="timeline-footer"></div></div></div>';
+                if(res[i]['congviectuan'] !== ''){
+                    html += '<div class="time-label"><span class="bg-success" id="tuan">Tuần '+(i+1)+'</span></div>';
+                    html += '<div><i class="fas fa-arrow-right bg-primary"></i><div class="timeline-item"><h3 class="timeline-header"><b id="ngay">'+res[i]['tungaytuan']+' - '+res[i]['denngaytuan']+'</b></h3><div class="timeline-body" id="congviec">'+res[i]['congviectuan']+'</div><div class="timeline-footer"></div></div></div>';
+                }
             };
             html += '<div><i class="far fa-clock bg-gray"></i></div>';
             $("#dscongviec").append(html);

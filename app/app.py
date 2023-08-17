@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi.responses import Response, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from hashlib import sha3_256
 import jwt
@@ -12,7 +13,13 @@ from .controllers.controller import *
 import os
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
 app.mount("/dist", StaticFiles(directory=os.path.join(os.getcwd(),"app","templates","dist")), name="dist")
 app.mount("/plugins", StaticFiles(directory=os.path.join(os.getcwd(),"app","templates","plugins")), name="plugins")
 
@@ -64,6 +71,14 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         raise credentials_exception
     return username
 
+# Middleware để bắt lỗi 404 và xử lý
+@app.middleware("http")
+async def catch_404(request, call_next):
+    response = await call_next(request)
+    if response.status_code == 404:
+        return templates.TemplateResponse('404.html', context={'request': request})
+    return response
+
 @app.post("/token", response_model=Token)
 async def login_for_access_token(credentials: UserCredentials):
     if verify_user_route(credentials):
@@ -104,8 +119,17 @@ async def home(request: Request, token: str = Cookie(None)):
     return RedirectResponse('/login')
 
 @app.get('/login')
-async def login(request: Request):
-    return templates.TemplateResponse('login.html', context={'request': request})
+async def login(request: Request, token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                return RedirectResponse(url='/')
+        except jwt.PyJWTError:
+            pass
+    else:
+        return templates.TemplateResponse('login.html', context={'request': request})
 
 @app.get('/hosonguoihuongdan')
 async def hosonguoihuongdan(request: Request, id: str):

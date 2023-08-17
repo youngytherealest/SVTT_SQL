@@ -14,15 +14,17 @@ if (!token){
   $("#sidebar").empty();
 }
 
+let username = getTokenFromCookie("username");
+
 $.ajax({
   type: "GET",
-  url: "get_user_info_by_username?token=" + token,
+  url: "get_user_info_by_username?id=" + username,
   success: function (res) {
     $("#dashboard_user_fullname").text(res.hoten);
     $("#dashboard_avatar_url").prop("src", res.avatar);
     $("#dashboard_user_fullname").prop(
       "href",
-      "hosonguoihuongdan?id=" + token
+      "hosonguoihuongdan?id=" + username
     );
   },
   error: function(xhr, status, error){

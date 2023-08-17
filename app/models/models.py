@@ -113,8 +113,8 @@ def update_xoa_de_tai_by_id(id: str):
     
 def get_nhom_thuc_tap_by_user_id(id: str):
     try:
-        result = cursor.execute("EXEC GetNhomThucTapByUserID ?", id)
-        data = [{'ngay': datetime.datetime.strptime(i[1], "%Y-%m-%d").strftime("%d/%m/%Y"), 'ten': i[3], 'mota': i[4]} for i in result]
+        result = cursor.execute("EXEC GetNhomThucTapByUserID ?", id).fetchall()
+        data = [{'ngay': i[0], 'id': i[1], 'ten': i[2], 'mota': i[3]} for i in result]
         return data
     except Exception as e:
         return e
@@ -129,8 +129,8 @@ def them_de_tai_thuc_tap(ten: str, mota: str, isDeleted: int):
     
 def get_all_ky_thuc_tap():
     try:
-        result = cursor.execute("EXEC GetDSDeTaiTheoThoiHan")
-        data = [{'id': i[0], 'ngaybatdau': i[1], 'ngayketthuc': i[2], 'xoa': i[3], 'thoihan': i[4]} for i in result]
+        result = cursor.execute("EXEC GetDSDeTaiTheoThoiHan").fetchall()
+        data = [{'id': i[0], 'ngaybatdau': i[1], 'ngayketthuc': i[2], 'thoihan': i[3]} for i in result]
         return data
     except Exception as e:
         return e

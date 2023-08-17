@@ -1,5 +1,4 @@
-# Sử dụng Python 3.9 làm base image
-FROM python:3.9
+FROM laudio/pyodbc:1.0.38
 
 # Đặt thư mục làm thư mục làm việc cho ứng dụng
 WORKDIR /app

@@ -71,6 +71,7 @@ async def login_for_access_token(credentials: UserCredentials):
         access_token = create_access_token(data={"sub": credentials.username}, expires_delta=access_token_expires)
         response = JSONResponse({"access_token": access_token, "token_type": "bearer"})
         response.set_cookie("token", access_token, httponly=False)
+        response.set_cookie("username", credentials.username, httponly=False)
         return response
     raise HTTPException(status_code=400, detail="Incorrect username or password")
 
@@ -107,25 +108,10 @@ async def login(request: Request):
     return templates.TemplateResponse('login.html', context={'request': request})
 
 @app.get('/hosonguoihuongdan')
-async def hosonguoihuongdan(request: Request, id: str, token: str = Cookie(None)):
-    if token:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            username = payload.get("sub")
-            if username:
-                result = get_user_info_by_username(username)
-                detai = get_nhom_thuc_tap_by_user_id_controller(username)
-                profile = {'hoten': result[0], 'sdt': result[1], 'email': result[2], 'chucdanh': result[3], 'phong': result[4], 'zalo': result[5], 'facebook': result[6], 'github': result[7], 'avatar': result[8]}
-                return templates.TemplateResponse('profile.html', context={'request': request, 'profile': profile, 'detai': detai})
-                
-        except jwt.PyJWTError:
-            pass
-        return RedirectResponse('/login')
-    else:
-        result = get_user_info_by_username(id)
-        detai = get_nhom_thuc_tap_by_user_id_controller(id)
-        profile = {'hoten': result[0], 'sdt': result[1], 'email': result[2], 'chucdanh': result[3], 'phong': result[4], 'zalo': result[5], 'facebook': result[6], 'github': result[7], 'avatar': result[8]}
-        return templates.TemplateResponse('profile.html', context={'request': request, 'profile': profile, 'detai': detai})
+async def hosonguoihuongdan(request: Request, id: str):
+    result = get_user_info_by_username(id)
+    profile = {'hoten': result[0], 'sdt': result[1], 'email': result[2], 'chucdanh': result[3], 'phong': result[4], 'zalo': result[5], 'facebook': result[6], 'github': result[7], 'avatar': result[8]}
+    return templates.TemplateResponse('profile.html', context={'request': request, 'profile': profile})
 
 @app.get('/danhgiasinhvien')
 async def danhgiasinhvien(request: Request, token: str = Cookie(None)):
@@ -179,6 +165,10 @@ async def danhsachnhomthuctap(request: Request, token: str = Cookie(None)):
             pass
     return RedirectResponse('/login')
 
+@app.get('/get_ds_de_tai_profile')
+async def get_ds_de_tai_profile(id: str):
+    return JSONResponse(status_code=200, content=get_nhom_thuc_tap_by_user_id_controller(id))
+
 @app.get('/get_so_luong_sinh_vien_theo_truong')
 async def get_so_luong_sinh_vien_theo_truong_route(token: str = Cookie(None)):
     if token:
@@ -218,7 +208,7 @@ async def get_all_sinh_vien_route(token: str = Cookie(None)):
     return RedirectResponse('/login')
 
 @app.get('/get_user_info_by_username')
-async def get_user_info_by_username_route(token: str = Cookie(None)):
+async def get_user_info_by_username_route(id: str, token: str = Cookie(None)):
     if token:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

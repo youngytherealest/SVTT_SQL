@@ -275,3 +275,37 @@ def get_id_nhom_by_sv_id(id: str):
         return int(i[0])
     except Exception as e:
         return e
+    
+def get_ds_nhom_chua_co_cong_viec():
+    try:
+        result = cursor.execute("EXEC GetDSNhomChuaCoCongViec")
+        data = [{'id': i[0], 'ngaybatdau': i[3], 'tendetai': i[5], 'idcongviec': i[7]} for i in result]
+        return data
+    except Exception as e:
+        return e
+    
+
+def get_ds_nhom_da_co_cong_viec():
+    try:
+        result = cursor.execute("EXEC GetDSNhomDaCoCongViec")
+        data = [{'id': i[0], 'ngaybatdau': i[3], 'tendetai': i[5], 'idcongviec': i[7]} for i in result]
+        return data
+    except Exception as e:
+        return e
+    
+def get_ds_cong_viec_by_id_nhom(id: int):
+    try:
+        i = cursor.execute("EXEC GetCongViecByIDNhom ?", id).fetchone()
+        data = [{'tungaytuan': i[1], 'denngaytuan': i[2], 'congviectuan': i[3]}, {'tungaytuan': i[5], 'denngaytuan': i[6], 'congviectuan': i[7]}, {'tungaytuan': i[9], 'denngaytuan': i[10], 'congviectuan': i[11]}, {'tungaytuan': i[13], 'denngaytuan': i[14], 'congviectuan': i[15]}, {'tungaytuan': i[17], 'denngaytuan': i[18], 'congviectuan': i[19]}, {'tungaytuan': i[21], 'denngaytuan': i[22], 'congviectuan': i[23]}, {'tungaytuan': i[25], 'denngaytuan': i[26], 'congviectuan': i[27]}, {'tungaytuan': i[29], 'denngaytuan': i[30], 'congviectuan': i[31]}]
+        return data
+    except Exception as e:
+        return e
+
+def them_cong_viec_nhom(id: int, tungaytuan_1: str, denngaytuan_1: str, congviectuan_1: str, tungaytuan_2: str, denngaytuan_2: str, congviectuan_2: str, tungaytuan_3: str, denngaytuan_3: str, congviectuan_3: str, tungaytuan_4: str, denngaytuan_4: str, congviectuan_4: str, tungaytuan_5: str, denngaytuan_5: str, congviectuan_5: str, tungaytuan_6: str, denngaytuan_6: str, congviectuan_6: str, tungaytuan_7: str, denngaytuan_7: str, congviectuan_7: str, tungaytuan_8: str, denngaytuan_8: str, congviectuan_8: str):
+    try:
+        result = cursor.execute("EXEC InsertCongViec ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?", id,tungaytuan_1,denngaytuan_1,congviectuan_1,tungaytuan_2,denngaytuan_2,congviectuan_2,tungaytuan_3,denngaytuan_3,congviectuan_3,tungaytuan_4,denngaytuan_4,congviectuan_4,tungaytuan_5,denngaytuan_5,congviectuan_5,tungaytuan_6,denngaytuan_6,congviectuan_6,tungaytuan_7,denngaytuan_7,congviectuan_7,tungaytuan_8,denngaytuan_8,congviectuan_8)
+        cursor.commit()
+        return True
+    except Exception as e:
+        return e
+    

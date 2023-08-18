@@ -52,6 +52,18 @@ class DanhGiaSVByID(BaseModel):
     khananggiaiquyetcongviec_text: str
     danhgiachung_number: float
 
+class ThongTinSV(BaseModel):
+    mssv: str
+    hoten: str
+    gioitinh: int
+    sdt: str
+    email: str
+    diachi: str
+    malop: str
+    truong: str
+    nganh: str
+    khoa: int
+
 SECRET_KEY = "BN3298"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60*6
@@ -613,3 +625,22 @@ async def xuat_danh_gia(id: str, token: str = Cookie(None)):
 @app.get('/goi_y_dia_chi')
 async def goi_y_dia_chi(q: str):
     return JSONResponse(status_code=200, content=get_goi_y_xa_phuong_controller(q))
+
+@app.get('/get_danh_sach_nganh')
+async def get_danh_sach_nganh_route():
+    return JSONResponse(status_code=200, content=get_danh_sach_nganh_controller())
+
+@app.get('/get_danh_sach_truong')
+async def get_danh_sach_truong_route():
+    return JSONResponse(status_code=200, content=get_danh_sach_truong_controller())
+
+@app.post('/thong_tin_sinh_vien')
+async def thong_tin_sinh_vien_route(sv: ThongTinSV):
+    result = insert_sinh_vien_controller(sv.mssv, sv.hoten, sv.gioitinh, sv.sdt, sv.email, sv.diachi, sv.malop, sv.truong, sv.nganh, sv.khoa)
+    print(result)
+    if result:
+        response = JSONResponse(status_code=200, content={'status': 'OK'})
+        response.set_cookie('studentid', result)
+        return response
+    else:
+        return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})

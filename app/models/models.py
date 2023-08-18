@@ -6,9 +6,10 @@ cursor = conn.cursor()
 
 def insert_sinh_vien(MSSV: str, HoTen: str, GioiTinh: int, SDT: str, Email: str, DiaChi: str, MaLop: str, Truong: str, Nganh: str, Khoa: int) -> bool:
     try:
-        cursor.execute("EXEC InsertSinhVien ?, ?, ?, ?, ?, ?, ?, ?, ?, ?", MSSV, HoTen, GioiTinh, SDT, Email, DiaChi, MaLop, Truong, Nganh, Khoa)
+        i = cursor.execute("EXEC InsertSinhVien ?, ?, ?, ?, ?, ?, ?, ?, ?, ?", MSSV, HoTen, GioiTinh, SDT, Email, DiaChi, MaLop, Truong, Nganh, Khoa).fetchone()
+        result = i[0]
         conn.commit()
-        return True
+        return result
     except Exception as e:
         print(e)
         return False
@@ -312,6 +313,29 @@ def them_cong_viec_nhom(id: int, tungaytuan_1: str, denngaytuan_1: str, congviec
 def get_goi_y_xa_phuong(q: str):
     try:
         result = cursor.execute("SELECT DiaChi FROM XaPhuong WHERE DiaChi LIKE '%' + ? + '%'", q).fetchall()
-        return [{'diachi': i[0]} for i in result]
+        return [i[0] for i in result]
+    except Exception as e:
+        return e
+    
+def get_danh_sach_nganh():
+    try:
+        result = cursor.execute("SELECT Ten FROM Nganh").fetchall()
+        return [i[0] for i in result]
+    except Exception as e:
+        return e
+    
+def get_danh_sach_truong():
+    try:
+        result = cursor.execute("SELECT KyHieu, Ten FROM Truong").fetchall()
+        return [{'kyhieu': i[0], 'ten': i[1]} for i in result]
+    except Exception as e:
+        return e
+    
+def insert_thong_tin_sinh_vien(mssv: str, hoten: str, gioitinh: int, sdt: str, email: str, diachi: str, malop: str, truong: str, nganh: str, khoa: int):
+    try:
+        i = cursor.execute("INSERT INTO SinhVien(MSSV, HoTen, GioiTinh, SDT, Email, DiaChi, MaLop, Truong, Nganh, Khoa) OUTPUT INSERTED.ID VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", mssv, hoten, gioitinh, sdt, email, diachi, malop, truong, nganh, khoa)
+        result = i.fetchone()[0]
+        cursor.commit()
+        return result
     except Exception as e:
         return e

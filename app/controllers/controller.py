@@ -128,3 +128,12 @@ def them_cong_viec_nhom_controller(id: int, tungaytuan_1: str, denngaytuan_1: st
 
 def get_goi_y_xa_phuong_controller(q: str):
     return get_goi_y_xa_phuong(q)
+
+def get_danh_sach_nganh_controller():
+    return get_danh_sach_nganh()
+
+def get_danh_sach_truong_controller():
+    return get_danh_sach_truong()
+
+def insert_thong_tin_sinh_vien_controller(mssv: str, hoten: str, gioitinh: int, sdt: str, email: str, diachi: str, malop: str, truong: str, nganh: str, khoa: int):
+    return insert_thong_tin_sinh_vien(mssv, hoten, gioitinh, sdt, email, diachi, malop, truong, nganh, khoa)

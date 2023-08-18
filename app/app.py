@@ -131,6 +131,10 @@ async def login(request: Request, token: str = Cookie(None)):
     else:
         return templates.TemplateResponse('login.html', context={'request': request})
 
+@app.get('/sinhvien')
+async def nhap_thong_tin_sinh_vien(request: Request):
+    return templates.TemplateResponse('student.html', context={'request': request})
+
 @app.get('/hosonguoihuongdan')
 async def hosonguoihuongdan(request: Request, id: str):
     result = get_user_info_by_username(id)
@@ -605,3 +609,7 @@ async def xuat_danh_gia(id: str, token: str = Cookie(None)):
         except jwt.PyJWTError:
             pass
     return RedirectResponse('/login')
+
+@app.get('/goi_y_dia_chi')
+async def goi_y_dia_chi(q: str):
+    return JSONResponse(status_code=200, content=get_goi_y_xa_phuong_controller(q))

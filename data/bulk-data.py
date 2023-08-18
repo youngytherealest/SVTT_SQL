@@ -11,23 +11,15 @@ conn = pyodbc.connect(f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database
 # Đối với pyodbc
 cursor = conn.cursor()
 
-df = pd.read_json(f'nhomtt.json', encoding='utf8')
+df = pd.read_json(f'xaphuong.json', encoding='utf8')
 
 insert_query = """
-UPDATE SinhVien
-SET NhomHuongDan = ?
-WHERE SinhVien.MSSV = ?
+INSERT INTO XaPhuong(DiaChi)
+VALUES (?)
 """
 for i in df.itertuples(index=False):
-    # print(i)
-    id = 1
-    if not pd.isna(i.id):
-        id = i.id
-    # Giá trị cần chèn
-    values = (id, i.mssv)
-
     # Thực hiện chèn dữ liệu
-    cursor.execute(insert_query, values)
+    cursor.execute(insert_query, i.province)
     conn.commit()
 
 # Đóng kết nối sau khi hoàn thành

@@ -309,3 +309,9 @@ def them_cong_viec_nhom(id: int, tungaytuan_1: str, denngaytuan_1: str, congviec
     except Exception as e:
         return e
     
+def get_goi_y_xa_phuong(q: str):
+    try:
+        result = cursor.execute("SELECT DiaChi FROM XaPhuong WHERE DiaChi LIKE '%' + ? + '%'", q).fetchall()
+        return [{'diachi': i[0]} for i in result]
+    except Exception as e:
+        return e

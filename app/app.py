@@ -410,6 +410,17 @@ async def get_ds_nhom_thuc_tap_route():
     result = get_ds_nhom_thuc_tap_controller()
     return JSONResponse(status_code=200, content=result)
 
+@app.get('/get_ds_nhom_thuc_tap_con_han')
+async def get_ds_nhom_thuc_tap_con_han_route():
+    result = get_ds_nhom_thuc_tap_controller()
+    current_date = datetime.datetime.now().date()
+    data: list = []
+    for i in result:
+        ngay_bat_dau = datetime.datetime.strptime(i['ngaybatdau'], '%d/%m/%Y').date()
+        if ngay_bat_dau >= current_date:
+            data.append(i)
+    return JSONResponse(status_code=200, content=data)
+
 @app.get('/get_ds_nhom_chua_co_cong_viec')
 async def get_ds_nhom_chua_co_cong_viec_route(token: str = Cookie(None)):
     if token:
@@ -626,7 +637,6 @@ async def get_danh_sach_truong_route():
 @app.post('/thong_tin_sinh_vien')
 async def thong_tin_sinh_vien_route(sv: ThongTinSV):
     result = insert_sinh_vien_controller(sv.mssv, sv.hoten, sv.gioitinh, sv.sdt, sv.email, sv.diachi, sv.malop, sv.truong, sv.nganh, sv.khoa)
-    print(result)
     if result:
         response = JSONResponse(status_code=200, content={'status': 'OK'})
         response.set_cookie('studentid', result, max_age=5356800) # Hạn 2 tháng
@@ -637,3 +647,13 @@ async def thong_tin_sinh_vien_route(sv: ThongTinSV):
 @app.get('/get_chi_tiet_sinh_vien_moi_nhap_thong_tin')
 async def get_chi_tiet_sinh_vien_moi_nhap_thong_tin(id: str):
     return JSONResponse(status_code=200, content=get_chi_tiet_sinh_vien_chua_co_nhom_controller(id))
+
+@app.post('/them_nhom_thuc_tap_sv')
+async def them_nhom_thuc_tap_sv_route(idsinhvien: int, idnhom: int):
+    result = update_nhom_thuc_tap_by_sv_id_controller(idsinhvien, idnhom)
+    if result:
+        response = JSONResponse(status_code=200, content={'status': 'OK'})
+        response.set_cookie('registed', True, max_age=5356800)
+        return response
+    else:
+        return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})

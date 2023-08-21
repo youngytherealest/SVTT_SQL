@@ -1,6 +1,8 @@
 from ..models.models import *
 from ..utils.export_report import export
 
+import datetime
+
 def insert_sinh_vien_controller(MSSV, HoTen: str, GioiTinh: int, SDT: str, Email: str, DiaChi: str, MaLop: str, Truong: str, Nganh: str, Khoa: int) -> bool:
     result = insert_sinh_vien(MSSV, HoTen, GioiTinh, SDT, Email, DiaChi, MaLop, Truong, Nganh, Khoa)
     return result
@@ -139,3 +141,6 @@ def get_danh_sach_truong_controller():
 
 def insert_thong_tin_sinh_vien_controller(mssv: str, hoten: str, gioitinh: int, sdt: str, email: str, diachi: str, malop: str, truong: str, nganh: str, khoa: int):
     return insert_sinh_vien(mssv, hoten, gioitinh, sdt, email, diachi, malop, truong, nganh, khoa)
+
+def update_nhom_thuc_tap_by_sv_id_controller(idsinhvien: int, idnhom: int):
+    return update_nhom_thuc_tap_by_sv_id(idsinhvien, idnhom)

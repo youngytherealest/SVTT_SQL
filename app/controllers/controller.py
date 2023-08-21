@@ -60,10 +60,12 @@ def update_xoa_ky_thuc_tap_by_id_controller(id: str):
     return update_xoa_ky_thuc_tap_by_id(id)
 
 def get_ds_nhom_thuc_tap_controller():
-    return get_ds_nhom_thuc_tap()
+    result = get_ds_nhom_thuc_tap()
+    return result
 
 def get_chi_tiet_nhom_thuc_tap_by_id_controller(id: str):
-    return get_chi_tiet_nhom_thuc_tap_by_id(id)
+    result = get_chi_tiet_nhom_thuc_tap_by_id(id)
+    return result
 
 def get_chi_tiet_chinh_sua_nhom_controller():
     return get_chi_tiet_chinh_sua_nhom()

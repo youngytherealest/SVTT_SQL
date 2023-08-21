@@ -147,6 +147,10 @@ async def login(request: Request, token: str = Cookie(None)):
 async def nhap_thong_tin_sinh_vien(request: Request):
     return templates.TemplateResponse('student.html', context={'request': request})
 
+@app.get('/chonnhomthuctap')
+async def chon_nhom_thuc_tap(request: Request):
+    return templates.TemplateResponse('select_group.html', context={'request': request})
+
 @app.get('/hosonguoihuongdan')
 async def hosonguoihuongdan(request: Request, id: str):
     result = get_user_info_by_username(id)
@@ -402,16 +406,9 @@ async def update_xoa_ky_thuc_tap_by_id_route(id: str, token: str = Cookie(None))
     return RedirectResponse('/login')
 
 @app.get('/get_ds_nhom_thuc_tap')
-async def get_ds_nhom_thuc_tap_route(token: str = Cookie(None)):
-    if token:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            username = payload.get("sub")
-            if username:
-                return get_ds_nhom_thuc_tap_controller()
-        except jwt.PyJWTError:
-            pass
-    return RedirectResponse('/login')
+async def get_ds_nhom_thuc_tap_route():
+    result = get_ds_nhom_thuc_tap_controller()
+    return JSONResponse(status_code=200, content=result)
 
 @app.get('/get_ds_nhom_chua_co_cong_viec')
 async def get_ds_nhom_chua_co_cong_viec_route(token: str = Cookie(None)):
@@ -466,16 +463,8 @@ async def get_ds_cong_viec_by_id_nhom_route(id: str, token: str = Cookie(None)):
     return RedirectResponse('/login')
 
 @app.get('/get_chi_tiet_nhom_thuc_tap_by_id')
-async def get_chi_tiet_nhom_thuc_tap_by_id_route(id: str, token: str = Cookie(None)):
-    if token:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            username = payload.get("sub")
-            if username:
-                return get_chi_tiet_nhom_thuc_tap_by_id_controller(id)
-        except jwt.PyJWTError:
-            pass
-    return RedirectResponse('/login')
+async def get_chi_tiet_nhom_thuc_tap_by_id_route(id: str):
+    return JSONResponse(status_code=200, content=get_chi_tiet_nhom_thuc_tap_by_id_controller(id))
 
 @app.get('/get_chi_tiet_chinh_sua_nhom')
 async def get_chi_tiet_chinh_sua_nhom_route(token: str = Cookie(None)):

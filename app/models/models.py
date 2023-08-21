@@ -170,7 +170,7 @@ def update_xoa_ky_thuc_tap_by_id(id: str):
 def get_ds_nhom_thuc_tap():
     try:
         result = cursor.execute("EXEC GetDSNhomThucTap")
-        data = [{'id': i[0], 'nguoihuongdan': i[2], 'ngaybatdau': i[3], 'tendetai': i[5], 'xoa': i[1]} for i in result]
+        data = [{'id': i[0], 'nguoihuongdan': i[2], 'ngaybatdau': i[3], 'tendetai': i[5], 'mota': i[6], 'xoa': i[1]} for i in result]
         return data
     except Exception as e:
         return e
@@ -178,7 +178,7 @@ def get_ds_nhom_thuc_tap():
 def get_chi_tiet_nhom_thuc_tap_by_id(id: str):
     try:
         i = cursor.execute("EXEC GetChiTietNhomThucTapByID ?", id).fetchone()
-        return {'id': i[0], 'nguoihuongdan_hoten': i[5], 'nguoihuongdan_id': i[1], 'kythuctap_id': i[2], 'kythuctap_ngaybatdau': i[6], 'kythuctap_ngayketthuc': i[7], 'detai_id': i[3], 'detai_ten': i[7], 'detai_mota': i[8]}
+        return {'id': i[0], 'nguoihuongdan_hoten': i[5], 'nguoihuongdan_id': i[1], 'kythuctap_id': i[2], 'kythuctap_ngaybatdau': i[6], 'kythuctap_ngayketthuc': i[7], 'detai_id': i[3], 'detai_ten': i[8], 'detai_mota': i[9]}
     except Exception as e:
         return e
     

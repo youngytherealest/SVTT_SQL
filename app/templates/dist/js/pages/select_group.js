@@ -35,14 +35,13 @@ $("#danhsachnhom").on('change', function(){
   });
 });
 
-$("#submitBtn").on('click', function(){
-  let id_nhom = $("#danhsachnhom").val();
-  if(document.cookie.indexOf('registed')===-1){
-    $("#submitBtn").prop('disabled', true);
-  }else{
+if(document.cookie.indexOf('groupid')!==-1){
+  $("#submitBtn").prop('disabled', true);
+}else{
+  $("#submitBtn").on('click', function(){
+    let id_nhom = $("#danhsachnhom").val();
     if(document.cookie.indexOf('studentid') !== -1){
       let id_sinhvien = document.cookie.split('studentid=')[1].split(';')[0];
-  
       $.ajax({
         type: 'POST',
         url: 'them_nhom_thuc_tap_sv?idsinhvien='+parseInt(id_sinhvien)+'&idnhom='+parseInt(id_nhom),
@@ -68,5 +67,5 @@ $("#submitBtn").on('click', function(){
         }
       });
     }
-  }
-})
+  })
+}

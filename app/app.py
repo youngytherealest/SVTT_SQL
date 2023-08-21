@@ -653,7 +653,7 @@ async def them_nhom_thuc_tap_sv_route(idsinhvien: int, idnhom: int):
     result = update_nhom_thuc_tap_by_sv_id_controller(idsinhvien, idnhom)
     if result:
         response = JSONResponse(status_code=200, content={'status': 'OK'})
-        response.set_cookie('registed', True, max_age=5356800)
+        response.set_cookie('groupid', result, max_age=5356800)
         return response
     else:
         return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})

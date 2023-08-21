@@ -330,12 +330,3 @@ def get_danh_sach_truong():
         return [{'kyhieu': i[0], 'ten': i[1]} for i in result]
     except Exception as e:
         return e
-    
-def insert_thong_tin_sinh_vien(mssv: str, hoten: str, gioitinh: int, sdt: str, email: str, diachi: str, malop: str, truong: str, nganh: str, khoa: int):
-    try:
-        i = cursor.execute("INSERT INTO SinhVien(MSSV, HoTen, GioiTinh, SDT, Email, DiaChi, MaLop, Truong, Nganh, Khoa) OUTPUT INSERTED.ID VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", mssv, hoten, gioitinh, sdt, email, diachi, malop, truong, nganh, khoa)
-        result = i.fetchone()[0]
-        cursor.commit()
-        return result
-    except Exception as e:
-        return e

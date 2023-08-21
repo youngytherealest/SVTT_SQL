@@ -46,7 +46,7 @@ $.ajax({
 });
 
 
-if (document.cookie.indexOf('submited') == -1){
+if (document.cookie.indexOf('studentid') == -1){
     $('#submitBtn').on('click', function(){
         $('input[type="text"], input[type="email"], input[type="number"]').each(function(){
             if($(this).val() === ''){
@@ -95,6 +95,30 @@ if (document.cookie.indexOf('submited') == -1){
 }else{
     disable_input();
     $("#message").text("Bạn đã điền thông tin");
+    let id = document.cookie.split('studentid=')[1].split(';')[0];
+
+    $.ajax({
+        type: 'GET',
+        url: 'get_chi_tiet_sinh_vien_moi_nhap_thong_tin?id='+id,
+        success: function(res){
+            let truong = {
+                'VLUTE': 'Trường ĐH Sư phạm Kỹ thuật Vĩnh Long',
+                'CTU': 'Trường Đại học Cần Thơ',
+                'MKU': 'Trường Đại học Cửu Long',
+                'MTU': 'Trường Đại học Xây dựng Miền Tây'
+            }
+            $('#sinhvien_mssv').val(res.mssv);
+            $('#sinhvien_hoten').val(res.hoten);
+            $('#sinhvien_gioitinh').children('option').text(res.gioitinh);
+            $('#sinhvien_sdt').val(res.sdt);
+            $('#sinhvien_email').val(res.email);
+            $('#sinhvien_diachi').val(res.diachi);
+            $('#sinhvien_malop').val(res.malop);
+            $('#sinhvien_khoa').val(res.khoa);
+            $('#sinhvien_nganh').val(res.nganh);
+            $('#sinhvien_truong').children('option').text(res.truong);
+        }
+    });
 }
 
 function disable_input(){

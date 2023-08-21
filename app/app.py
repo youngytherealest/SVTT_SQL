@@ -640,7 +640,11 @@ async def thong_tin_sinh_vien_route(sv: ThongTinSV):
     print(result)
     if result:
         response = JSONResponse(status_code=200, content={'status': 'OK'})
-        response.set_cookie('studentid', result)
+        response.set_cookie('studentid', result, max_age=5356800) # Hạn 2 tháng
         return response
     else:
         return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})
+    
+@app.get('/get_chi_tiet_sinh_vien_moi_nhap_thong_tin')
+async def get_chi_tiet_sinh_vien_moi_nhap_thong_tin(id: str):
+    return JSONResponse(status_code=200, content=get_chi_tiet_sinh_vien_chua_co_nhom_controller(id))

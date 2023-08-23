@@ -195,3 +195,40 @@ $("#dashboard_bangdssv").on("click", "#downloadBtn", function () {
     }
   });
 });
+
+$("#uploadBtn").click(function() {
+  $("#fileInput").click();
+});
+
+$("#fileInput").change(function() {
+  var fileName = $(this).val();
+  if (fileName) {
+    var form = new FormData();
+    form.append("file", fileInput.files[0], fileName);
+    
+    var settings = {
+      "url": "import_danh_gia_sv",
+      "method": "POST",
+      "timeout": 0,
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": form
+    };
+    
+    $.ajax(settings).done(function (response) {
+      if(response){
+        Toast.fire({
+          icon: "success",
+          title: "Import thành công",
+        });
+        bangdssv.ajax.reload();
+      }else{
+        Toast.fire({
+          icon: "error",
+          title: "Import thất bại",
+        });
+      }
+    });
+  }
+});

@@ -5,3 +5,4 @@ uvicorn
 pyjwt
 pyodbc
 docx-mailmerge
+pandas

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Depends, HTTPException, Cookie
+from fastapi import FastAPI, Request, Depends, HTTPException, Cookie, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.responses import Response, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -6,11 +6,13 @@ from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from hashlib import sha3_256
+from .controllers.controller import *
+
+import os
 import jwt
 import datetime
-
-from .controllers.controller import *
-import os
+import pandas as pd
+import shutil
 
 app = FastAPI()
 app.add_middleware(
@@ -656,4 +658,23 @@ async def them_nhom_thuc_tap_sv_route(idsinhvien: int, idnhom: int):
         response.set_cookie('groupid', result, max_age=5356800)
         return response
     else:
+        return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})
+    
+@app.post('/import_danh_gia_sv')
+async def import_danh_gia_sv(file: UploadFile = File(...), token: str = Cookie(None)):
+    uploaded_folder = os.path.join(os.getcwd(), 'uploaded', 'xlsx')
+    os.makedirs(uploaded_folder, exist_ok=True)
+    
+    file_path = os.path.join(uploaded_folder, file.filename)
+    with open(file_path, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+    
+    # Xử lý file vừa upload
+    df = pd.read_excel(file_path)
+    try:
+        for i in df.itertuples(index=False):
+            result = update_danh_gia_sv_by_mssv_controller(i[0], i[4], i[3], i[6], i[5], i[8], i[7], i[10], i[9], i[12], i[11], i[14], i[13], i[16], i[15], i[17])
+        os.remove(file_path)
+        return JSONResponse(status_code=200, content={'status': 'OK'})
+    except Exception as e:
         return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})

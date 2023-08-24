@@ -41,9 +41,8 @@ def count_all_sinh_vien():
     
 def ti_le_sinh_vien_da_danh_gia():
     try:
-        daDanhGia = cursor.execute("EXEC GetSoLuongSinhVienDaDanhGia").fetchone()[0]
-        tong = cursor.execute("SELECT COUNT(ID) FROM SinhVien").fetchone()[0]
-        return str(daDanhGia) + '/' + str(tong)
+        sinhvientoihan = cursor.execute("EXEC GetDSSVSapToiHanBaoCao").fetchone()[0]
+        return sinhvientoihan
     except Exception as e:
         return e
 

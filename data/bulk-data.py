@@ -28,6 +28,7 @@ p_cursor = p_conn.cursor()
 #         if val == value:
 #             return key
 #     return None
+
 m_result = m_cursor.execute("SELECT * FROM SinhVien").fetchall()
 
 for i in m_result:

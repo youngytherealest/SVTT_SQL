@@ -232,3 +232,37 @@ $("#fileInput").change(function() {
     });
   }
 });
+
+// Clear modal
+function clear_modal() {
+  $("#modal_title").empty();
+  $("#modal_body").empty();
+  $("#modal_footer").empty();
+}
+
+$("#downloadBtn").on('click', function(){
+  clear_modal();
+
+  $.ajax({
+    type: 'GET',
+    url: 'get_all_ky_thuc_tap',
+    success: function(res){
+      $("#modal_title").text("Download đánh giá theo kỳ thực tập");
+      html = '<div class="form-group"><label for="modal_kythuctap_select">Kỳ thực tập</label><select id="modal_kythuctap_select" class="form-control"></select></div>';
+      $("#modal_body").append(html);
+      
+      $.each(res, function(idx, val){
+        $("#modal_kythuctap_select").append('<option value="'+val.id+'">'+val.ngaybatdau+' - '+val.ngayketthuc+'</option>');
+      });
+
+      $("#modal_footer").append(
+        '<button type="button" class="btn btn-primary" id="modal_submit_btn"><i class="fa-solid fa-floppy-disk"></i> Download</button>'
+      );
+      $("#modal_id").modal('show');
+
+      $("#modal_submit_btn").click(function(){
+        window.location.href = 'xuat_ds_sinh_vien_da_danh_gia?kythuctap='+$("#modal_kythuctap_select").val();
+      });
+    }
+  });
+})

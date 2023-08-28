@@ -1,9 +1,9 @@
 from mailmerge import MailMerge
 import os
 
-def export(sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg_tuanthuthoigian_text, dg_kienthuc_text, dg_kynangnghe_text, dg_khanangdoclap_text, dg_khanangnhom_text, dg_khananggiaiquyetcongviec_text, dg_ythuckyluat_number, dg_tuanthuthoigian_number, dg_kienthuc_number, dg_kynangnghe_number, dg_khanangdoclap_number, dg_khanangnhom_number, dg_khananggiaiquyetcongviec_number, dg_danhgiachung_number) -> bool:
+def export(username, sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg_tuanthuthoigian_text, dg_kienthuc_text, dg_kynangnghe_text, dg_khanangdoclap_text, dg_khanangnhom_text, dg_khananggiaiquyetcongviec_text, dg_ythuckyluat_number, dg_tuanthuthoigian_number, dg_kienthuc_number, dg_kynangnghe_number, dg_khanangdoclap_number, dg_khanangnhom_number, dg_khananggiaiquyetcongviec_number, dg_danhgiachung_number) -> bool:
     '''
-    NHẬN THAM SỐ ĐẦU VÀO RỒI XUẤT FILE PDF
+    NHẬN THAM SỐ ĐẦU VÀO RỒI XUẤT FILE DOCX
     ----------------
     - sv_hoten: Họ tên sinh viên
     - sv_lop: Lớp 
@@ -57,9 +57,10 @@ def export(sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg
         # Thực hiện mail merge với dữ liệu đã cung cấp
         document.merge(**data)
 
-        os.makedirs('DOCX', exist_ok=True)
+        output_path = os.path.join('DOCX', username)
+        os.makedirs(output_path, exist_ok=True)
         # Lưu file docx đã được mail merge (không bắt buộc, chỉ cần nếu bạn muốn lưu phiên bản đã merge)
-        output_docx = os.path.join("DOCX", f"{sv_hoten}_{sv_lop}.docx")
+        output_docx = os.path.join(output_path, f"{sv_hoten}_{sv_lop}.docx")
         document.write(output_docx)
 
         # Chuyển đổi file docx đã merge thành file pdf

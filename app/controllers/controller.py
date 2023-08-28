@@ -147,3 +147,6 @@ def insert_thong_tin_sinh_vien_controller(mssv: str, hoten: str, gioitinh: int, 
 
 def update_nhom_thuc_tap_by_sv_id_controller(idsinhvien: int, idnhom: int):
     return update_nhom_thuc_tap_by_sv_id(idsinhvien, idnhom)
+
+def get_dssv_da_danh_gia_by_nguoi_huong_dan_controller(username: str, kythuctap: int):
+    return get_dssv_da_danh_gia_by_nguoi_huong_dan(username=username, kythuctap=kythuctap)

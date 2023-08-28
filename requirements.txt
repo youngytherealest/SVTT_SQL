@@ -7,5 +7,3 @@ pyodbc
 docx-mailmerge
 pandas
 openpyxl
-pypdf2
-docx2pdf

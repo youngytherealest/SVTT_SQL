@@ -703,10 +703,13 @@ async def xuat_ds_sinh_vien_da_danh_gia(kythuctap: int, token: str = Cookie(None
                             arcname = os.path.relpath(file_path, output_path)
                             zipf.write(file_path, arcname)
             
-                # Xoá thư mục chứa các file docx vừa nén
-                shutil.rmtree(output_path, ignore_errors=False, onerror=None)
-                # Download file nén
-                return FileResponse(zip_output, headers={"Content-Disposition": f"attachment; filename=dssv_{username}.zip"})
+                try:
+                    # Xoá thư mục chứa các file docx vừa nén
+                    shutil.rmtree(output_path, ignore_errors=False, onerror=None)
+                    # Download file nén
+                    return FileResponse(zip_output, headers={"Content-Disposition": f"attachment; filename=dssv_{username}.zip"})
+                except Exception as e:
+                    return JSONResponse(status_code=400, content={'status': 'BADDDD REQUEST'})
         except jwt.PyJWTError:
             pass
     return RedirectResponse('/login')

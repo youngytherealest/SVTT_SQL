@@ -261,7 +261,21 @@ $("#downloadBtn").on('click', function(){
       $("#modal_id").modal('show');
 
       $("#modal_submit_btn").click(function(){
-        window.location.href = 'xuat_ds_sinh_vien_da_danh_gia?kythuctap='+$("#modal_kythuctap_select").val();
+        let url = 'xuat_ds_sinh_vien_da_danh_gia?kythuctap='+$("#modal_kythuctap_select").val();
+
+        $.ajax({
+          type: 'GET',
+          url: url,
+          success: function(res){
+            window.location.href=url;
+          },
+          error: function(xhr, status, error){
+            Toast.fire({
+              icon: "error",
+              title: "Chưa có đánh giá cho sinh viên trong kỳ thực tập này",
+            });
+          }
+        })
       });
     }
   });

@@ -1,9 +1,11 @@
 from mailmerge import MailMerge
+from docx2pdf import convert
+from PyPDF2 import PdfMerger
 import os
 
-def export(username, sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg_tuanthuthoigian_text, dg_kienthuc_text, dg_kynangnghe_text, dg_khanangdoclap_text, dg_khanangnhom_text, dg_khananggiaiquyetcongviec_text, dg_ythuckyluat_number, dg_tuanthuthoigian_number, dg_kienthuc_number, dg_kynangnghe_number, dg_khanangdoclap_number, dg_khanangnhom_number, dg_khananggiaiquyetcongviec_number, dg_danhgiachung_number) -> bool:
+def export(username, mssv, sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg_tuanthuthoigian_text, dg_kienthuc_text, dg_kynangnghe_text, dg_khanangdoclap_text, dg_khanangnhom_text, dg_khananggiaiquyetcongviec_text, dg_ythuckyluat_number, dg_tuanthuthoigian_number, dg_kienthuc_number, dg_kynangnghe_number, dg_khanangdoclap_number, dg_khanangnhom_number, dg_khananggiaiquyetcongviec_number, dg_danhgiachung_number) -> bool:
     '''
-    NHẬN THAM SỐ ĐẦU VÀO RỒI XUẤT FILE DOCX
+    NHẬN THAM SỐ ĐẦU VÀO RỒI XUẤT FILE PDF
     ----------------
     - sv_hoten: Họ tên sinh viên
     - sv_lop: Lớp 
@@ -60,17 +62,32 @@ def export(username, sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckylua
         output_path = os.path.join('DOCX', username)
         os.makedirs(output_path, exist_ok=True)
         # Lưu file docx đã được mail merge (không bắt buộc, chỉ cần nếu bạn muốn lưu phiên bản đã merge)
-        output_docx = os.path.join(output_path, f"{sv_hoten}_{sv_lop}.docx")
+        output_docx = os.path.join(output_path, f"{mssv}.docx")
         document.write(output_docx)
 
-        # Chuyển đổi file docx đã merge thành file pdf
-        # output_pdf = f"{sv_hoten}_{sv_lop}.pdf"
-        # convert(output_docx, output_pdf)
 
         # Đóng đối tượng MailMerge
         document.close()
-
         return output_docx
     except Exception as e:
         print(e)
         return False
+
+def convert2pdf(username, mssv, sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg_tuanthuthoigian_text, dg_kienthuc_text, dg_kynangnghe_text, dg_khanangdoclap_text, dg_khanangnhom_text, dg_khananggiaiquyetcongviec_text, dg_ythuckyluat_number, dg_tuanthuthoigian_number, dg_kienthuc_number, dg_kynangnghe_number, dg_khanangdoclap_number, dg_khanangnhom_number, dg_khananggiaiquyetcongviec_number, dg_danhgiachung_number):
+    output_docx = export(username, mssv, sv_hoten, sv_lop, tt_donvi, tt_nguoihuongdan, dg_ythuckyluat_text, dg_tuanthuthoigian_text, dg_kienthuc_text, dg_kynangnghe_text, dg_khanangdoclap_text, dg_khanangnhom_text, dg_khananggiaiquyetcongviec_text, dg_ythuckyluat_number, dg_tuanthuthoigian_number, dg_kienthuc_number, dg_kynangnghe_number, dg_khanangdoclap_number, dg_khanangnhom_number, dg_khananggiaiquyetcongviec_number, dg_danhgiachung_number)
+    # Chuyển đổi file docx đã merge thành file pdf
+    os.makedirs(os.path.join('PDF', username), exist_ok=True)
+    output_pdf = os.path.join('PDF', username, f"{mssv}.pdf")
+    convert(output_docx, output_pdf)
+    return output_pdf
+
+def mergeAllPDF(input_path, output_path, username):
+    # Tạo đối tượng PdfMerger
+    pdf_merger = PdfMerger()
+    for file in os.listdir(input_path):
+        pdf_merger.append(os.path.join('PDF', username, file))
+
+    # Lưu tệp PDF kết quả
+    pdf_merger.write(output_path)
+
+    return output_path

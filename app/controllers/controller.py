@@ -1,5 +1,5 @@
 from ..models.models import *
-from ..utils.export_report import export
+from ..utils.export_report import *
 
 import datetime
 

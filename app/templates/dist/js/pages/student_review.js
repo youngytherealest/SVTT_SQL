@@ -263,19 +263,24 @@ $("#downloadBtn").on('click', function(){
       $("#modal_submit_btn").click(function(){
         let url = 'xuat_ds_sinh_vien_da_danh_gia?kythuctap='+$("#modal_kythuctap_select").val();
 
-        $.ajax({
-          type: 'GET',
-          url: url,
-          success: function(res){
-            window.location.href=url;
-          },
-          error: function(xhr, status, error){
-            Toast.fire({
-              icon: "error",
-              title: "Chưa có đánh giá cho sinh viên trong kỳ thực tập này",
-            });
-          }
-        })
+        Swal.fire({
+          title: 'Đang tạo PDF, vui lòng không tải lại trang',
+          confirmButtonText: 'OK',
+        });
+        window.location.href = url;
+        // $.ajax({
+        //   type: 'GET',
+        //   url: url,
+        //   success: function(res){
+        //     window.location.href=url;
+        //   },
+        //   error: function(xhr, status, error){
+        //     Toast.fire({
+        //       icon: "error",
+        //       title: "Chưa có đánh giá cho sinh viên trong kỳ thực tập này",
+        //     });
+        //   }
+        // })
       });
     }
   });

@@ -20,10 +20,7 @@ let bangdsnhomthuctap = $("#bangdsnhomthuctap").DataTable({
   },
   columns: [
     { data: "id" },
-    { data: "ngaybatdau",
-      render: function(data, type, row){
-        return moment(data, 'YYYY-MM-DD').format('DD/MM/YYYY');
-      }
+    { data: "ngaybatdau"
     },
     { data: "tendetai" },
     { data: "nguoihuongdan" },

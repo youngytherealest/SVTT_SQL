@@ -26,4 +26,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 EXPOSE 8008
 
 # Khởi động ứng dụng FastAPI
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8008", "--workers", "2"]
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8008", "--workers", "2"]

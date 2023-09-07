@@ -23,7 +23,7 @@ RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17 && apt-get in
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install -r requirements.txt 
 # Expose cổng 80 để ứng dụng có thể truy cập từ bên ngoài Docker
-EXPOSE 8008
+EXPOSE 10000
 
 # Khởi động ứng dụng FastAPI
-CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "2"]
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "10000", "--workers", "2"]

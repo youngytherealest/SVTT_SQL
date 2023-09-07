@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Cập nhật hệ thống và cài đặt các gói cần thiết
-RUN apt-get update && apt-get install -y curl gnupg
+RUN apt-get update && apt-get install -y curl && sudo apt-get install -y gnupg
 
 # Thêm Microsoft repository key và repository cho msodbcsql17
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \

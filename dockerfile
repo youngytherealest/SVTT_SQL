@@ -7,10 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Cập nhật hệ thống và cài đặt các gói cần thiết
-RUN apt-get update && apt-get install -y \
-    curl \
-    gnupg \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl gnupg
 
 # Thêm Microsoft repository key và repository cho msodbcsql17
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
@@ -26,4 +23,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 EXPOSE 8008
 
 # Khởi động ứng dụng FastAPI
-CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8008", "--workers", "2"]
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "2"]

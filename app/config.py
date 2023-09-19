@@ -1,6 +1,6 @@
 import pyodbc
 
-server = 'giangpt-hass.duckdns.org'
+server = '27.74.191.209'
 database = 'SVTT'
 username = 'sa'
 password = 'Admin@2808'

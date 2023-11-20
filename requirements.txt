@@ -7,3 +7,4 @@ pyodbc
 docx-mailmerge
 pandas
 openpyxl
+python-dotenv

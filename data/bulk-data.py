@@ -11,12 +11,18 @@ conn = pyodbc.connect(f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database
 # Đối với pyodbc
 cursor = conn.cursor()
 
-find = cursor.execute("SELECT MSSV FROM SinhVien WHERE Truong='VLUTE'").fetchall()
-for i in find:
-    if len(i[0])==8:
-        cursor.execute("UPDATE SinhVien SET MaLop=? WHERE MSSV=?", f'Đại học Công nghệ thông tin 20{i[0][:2]}', i[0])
-        cursor.commit()
-        print(f'Updated {i[0]}')
+result = cursor.execute("SELECT ID, NgayBatDau, NgayKetThuc FROM KyThucTap WHERE isDeleted != 2")
+ktt = [{'id': i[0], 'ngaybatdau': i[1], 'ngayketthuc': i[2]} for i in result.fetchall()]
 
+print(ktt)
+# df = pd.DataFrame(pd.read_excel('dssvtt2024.xlsx'))
+
+# for i in df.itertuples(index=False):
+#     gioitinh: int = 1
+#     if i[2] != 'Nam':
+#         gioitinh = 0
+#     ins_query = cursor.execute("INSERT INTO SinhVien VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", i[0], i[1], gioitinh, i[3], i[5], i[4], i[7], 'VLUTE', i[6], 45, 999)
+#     cursor.commit()
+#     print(f'inserted {i[1]}')
 # Đóng kết nối sau khi hoàn thành
 conn.close()

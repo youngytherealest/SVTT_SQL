@@ -10,11 +10,8 @@ conn = pyodbc.connect(f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database
 
 # Đối với pyodbc
 cursor = conn.cursor()
-
-result = cursor.execute("SELECT ID, NgayBatDau, NgayKetThuc FROM KyThucTap WHERE isDeleted != 2")
-ktt = [{'id': i[0], 'ngaybatdau': i[1], 'ngayketthuc': i[2]} for i in result.fetchall()]
-
-print(ktt)
+cursor.execute("UPDATE SinhVien SET NhomHuongDan = 25 WHERE NhomHuongDan=999")
+cursor.commit()
 # df = pd.DataFrame(pd.read_excel('dssvtt2024.xlsx'))
 
 # for i in df.itertuples(index=False):

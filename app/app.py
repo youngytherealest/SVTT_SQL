@@ -260,7 +260,7 @@ async def get_all_sinh_vien_route(token: str = Cookie(None)):
             username = payload.get("sub")
             if username:
                 result = get_all_sinh_vien_controller()
-                ds: list = [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5], 'trangthai': i[6]} for i in result]
+                ds: list = [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5], 'trangthai': i[6], 'luuy': i[7]} for i in result]
                 return JSONResponse(status_code=200, content=ds)
         except jwt.PyJWTError:
             pass
@@ -553,13 +553,13 @@ async def get_chi_tiet_sinh_vien_by_id_route(id: str, token: str = Cookie(None))
     return RedirectResponse('/login')
 
 @app.get('/get_ds_sinh_vien_by_username')
-async def get_ds_sinh_vien_by_username_route(token: str = Cookie(None)):
+async def get_ds_sinh_vien_by_username_route(kythuctap: str, token: str = Cookie(None)):
     if token:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
             username = payload.get("sub")
             if username:
-                return JSONResponse(status_code=200, content=get_ds_sinh_vien_by_username_controller(username))
+                return JSONResponse(status_code=200, content=get_ds_sinh_vien_by_username_controller(username, kythuctap))
         except jwt.PyJWTError:
             pass
     return RedirectResponse('/login')

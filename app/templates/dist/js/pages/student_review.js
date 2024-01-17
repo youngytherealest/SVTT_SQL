@@ -5,54 +5,25 @@ var Toast = Swal.mixin({
   timer: 3000,
 });
 
-let bangdssv = $("#dashboard_bangdssv").DataTable({
-  paging: true,
-  lengthChange: false,
-  searching: true,
-  ordering: true,
-  info: true,
-  autoWidth: false,
-  responsive: true,
-  ajax: {
-    type: "GET",
-    url: "get_ds_sinh_vien_by_username",
-    dataSrc: "",
-  },
-  columns: [
-    { data: "mssv" },
-    { data: "hoten" },
-    { data: "gioitinh" },
-    { data: "nganh" },
-    { data: "truong" },
-    {
-      data: "trangthai",
-      render: function (data, type, row) {
-        if (data == 1) {
-          return '<span class="badge badge-warning"><i class="fa-solid fa-circle-exclamation"></i> Chưa đánh giá</span>';
-        } else {
-          return '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đã đánh giá</span>';
-        }
-      },
-    },
-    {
-      data: "id",
-      render: function (data, type, row) {
-        return (
-          '<a class="btn btn-info btn-sm" id="editBtn" data-id="' +
-          data +
-          '"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-success btn-sm" id="downloadBtn" data-id="' +
-          data +
-          '"><i class="fa-solid fa-download"></i></a>'
-        );
-      },
-    },
-  ],
-});
-
 function empty_modal() {
   $("#modal_title").empty();
   $("#modal_body").empty();
   $("#modal_footer").empty();
+}
+
+// load filter
+function loadFilter() {
+  // load kỳ thực tập
+  $.ajax({
+    type: 'GET',
+    url: '/get_all_ky_thuc_tap',
+    success: function(data) {
+      let filter_kythuctap = $('#filter_kythuctap');
+      data.forEach(element => {
+        filter_kythuctap.append('<option value=' + element.id + '>' + element.ngaybatdau + '-' + element.ngayketthuc + '</option>');
+      });
+    }
+  })
 }
 
 $("#dashboard_bangdssv").on("click", "#editBtn", function () {
@@ -280,3 +251,60 @@ $("#downloadBtn").on('click', function(){
     }
   });
 })
+
+function create_table(data) {
+  let bangdssv = $("#dashboard_bangdssv").DataTable({
+    paging: true,
+    lengthChange: false,
+    searching: true,
+    ordering: true,
+    info: true,
+    destroy: true,
+    autoWidth: false,
+    responsive: true,
+    ajax: {
+          type: "GET",
+          url: 'get_ds_sinh_vien_by_username?kythuctap='+data,
+          dataSrc: "",
+        },
+    columns: [
+      { data: "mssv" },
+      { data: "hoten" },
+      { data: "gioitinh" },
+      { data: "nganh" },
+      { data: "truong" },
+      {
+        data: "trangthai",
+        render: function (data, type, row) {
+          if (data == 1) {
+            return '<span class="badge badge-warning"><i class="fa-solid fa-circle-exclamation"></i> Chưa đánh giá</span>';
+          } else {
+            return '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đã đánh giá</span>';
+          }
+        },
+      },
+      {
+        data: "id",
+        render: function (data, type, row) {
+          return (
+            '<a class="btn btn-info btn-sm" id="editBtn" data-id="' +
+            data +
+            '"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-success btn-sm" id="downloadBtn" data-id="' +
+            data +
+            '"><i class="fa-solid fa-download"></i></a>'
+          );
+        },
+      },
+    ],
+  });
+}
+
+$(document).ready(function() {
+  create_table('-1');
+  $('#filter_kythuctap').on('change', function() {
+    let id = $('#filter_kythuctap').val();
+    create_table(id);
+  });
+  
+  loadFilter();
+});

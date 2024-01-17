@@ -38,6 +38,8 @@ let bangdskythuctap = $("#bangdskythuctap").DataTable({
         return (
           '<a class="btn btn-info btn-sm" id="editBtn" data-id="' +
           data +
+          '" data-thoihan="' +
+          row.thoihan +
           '"><i class="fas fa-pencil-alt"></i></a>  <a class="btn btn-danger btn-sm" data-id="' +
           data +
           '" id="deleteBtn"><i class="fas fa-trash"></i></a>'
@@ -56,6 +58,7 @@ function clear_modal() {
 // Sửa đề tài
 $("#bangdskythuctap").on("click", "#editBtn", function () {
   let id = $(this).data("id");
+  let thoihan = $(this).data("thoihan");
   clear_modal();
   $.ajax({
     type: "GET",
@@ -63,8 +66,8 @@ $("#bangdskythuctap").on("click", "#editBtn", function () {
     success: function (res) {
       $("#modal_title").text('Kỳ thực tập '+res.ngaybatdau);
       html = '<div class="form-group"><label>Thời gian thực tập:</label><div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div><input type="text" class="form-control float-right" id="reservation"></div></div><script>$("#reservation").daterangepicker();</script><div class="form-check"><input type="checkbox" class="form-check-input" id="modal_hoatdong_check"><label class="form-check-label" for="modal_hoatdong_check">Sử dụng kỳ thực tập</label></div>';
-      
       $("#modal_body").append(html);
+      $("#reservation").val(moment(res.ngaybatdau, 'DD/MM/YYYY').format('MM/DD/YYYY')+' - '+moment(res.ngayketthuc, 'DD/MM/YYYY').format('MM/DD/YYYY'))
       if (res.xoa == 0) {
         $("#modal_hoatdong_check").prop("checked", true);
       } else {
@@ -81,12 +84,12 @@ $("#bangdskythuctap").on("click", "#editBtn", function () {
       $("#modal_submit_btn").click(function () {
         let id = $(this).data("id");
 
-        let dates = $("#reservation").val().split(' - ');
+        let dates = $("#reservation").val().split('-');
         let xoa = $("#modal_hoatdong_check").is(":checked");
         let isDeleted = xoa ? 0 : 1;
         let ngaybatdau = moment(dates[0], 'MM/DD/YYYY').format('YYYY-MM-DD');
         let ngayketthuc = moment(dates[1], 'MM/DD/YYYY').format('YYYY-MM-DD');
-
+        console.log(dates[0]);
         $.ajax({
           type: "POST",
           url:
@@ -177,7 +180,6 @@ $("#themkythuctap_btn").click(function(){
     let isDeleted = xoa ? 0 : 1;
     let ngaybatdau = moment(dates[0], 'MM/DD/YYYY').format('YYYY-MM-DD');
     let ngayketthuc = moment(dates[1], 'MM/DD/YYYY').format('YYYY-MM-DD');
-
     $.ajax({
       type: 'POST',
       url: 'them_ky_thuc_tap?ngaybatdau='+ngaybatdau+'&ngayketthuc='+ngayketthuc+'&isDeleted='+isDeleted,

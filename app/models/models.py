@@ -169,7 +169,7 @@ def update_xoa_ky_thuc_tap_by_id(id: str):
 def get_ds_nhom_thuc_tap():
     try:
         result = cursor.execute("EXEC GetDSNhomThucTap")
-        data = [{'id': i[0], 'nguoihuongdan': i[2], 'ngaybatdau': i[3], 'tendetai': i[5], 'mota': i[6], 'xoa': i[1]} for i in result]
+        data = [{'id': i[0], 'nguoihuongdan': i[2], 'ngaybatdau': i[3], 'tendetai': i[5], 'mota': i[6], 'xoa': i[1], 'id_ktt': i[7], 'id_nhd': i[8], 'id_dt': i[9]} for i in result]
         return data
     except Exception as e:
         return e
@@ -251,6 +251,14 @@ def get_ds_sinh_vien_by_username(username: str, kythuctap: str):
     try:
         result = cursor.execute("EXEC GetDSSVByNguoiHuongDanID ?, ?", username, kythuctap)
         return [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5], 'trangthai': i[6]} for i in result]
+    except Exception as e:
+        return e
+def get_list_ky_hoc_tap_for_trang_danh_gia_sv():
+    try:
+        ktt_obj = cursor.execute("SELECT ID, NgayBatDau, NgayKetThuc FROM KyThucTap WHERE isDeleted != 2")
+
+        ktt = [{'id': i[0], 'ngaybatdau': i[1], 'ngayketthuc': i[2]} for i in ktt_obj.fetchall()]
+        return ktt
     except Exception as e:
         return e
     

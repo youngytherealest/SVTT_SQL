@@ -30,7 +30,7 @@ let bangdsnhomthuctap = $("#bangdsnhomthuctap").DataTable({
         if (data == 0) {
           return '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Đang hoạt động</span>';
         } else {
-          return '<span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Ngưng hoạt động</span>';
+          return '<span class="badge badge-danger" ><i class="fa-solid fa-xmark"></i> Ngưng hoạt động</span>';
         }
       }
     },
@@ -40,6 +40,14 @@ let bangdsnhomthuctap = $("#bangdsnhomthuctap").DataTable({
         return (
           '<a class="btn btn-info btn-sm" id="editBtn" data-id="' +
           data +
+          '" data-id_ktt="' +
+          row.id_ktt +
+          '" data-id_nhd="' +
+          row.id_nhd +
+          '" data-id_dt="' +
+          row.id_dt +
+          '" data-id_xoa="' +
+          row.xoa +
           '"><i class="fas fa-pencil-alt"></i></a>  <a class="btn btn-danger btn-sm" data-id="' +
           data +
           '" id="deleteBtn"><i class="fas fa-trash"></i></a>'
@@ -58,26 +66,32 @@ function clear_modal() {
 // Sửa đề tài
 $("#bangdsnhomthuctap").on("click", "#editBtn", function () {
   let id = $(this).data("id");
+  let id_ktt = $(this).data("id_ktt");
+  let id_nhd = $(this).data("id_nhd");
+  let id_dtai = $(this).data("id_dt");
+  let xoa = $(this).data("id_xoa");
   clear_modal();
   $.ajax({
     type: "GET",
     url: "get_chi_tiet_chinh_sua_nhom",
     success: function (res) {
       $("#modal_title").text('Nhóm '+id);
-      
+
       html = '<div class="form-group"><label for="modal_kythuctap_select">Kỳ thực tập</label><select id="modal_kythuctap_select" class="form-control select2"></select></div><div class="form-group"><label for="modal_detai_select">Đề tài</label><select id="modal_detai_select" class="form-control select2"></select></div><div class="form-group"><label for="modal_nguoihuongdan_select">Người hướng dẫn</label><select id="modal_nguoihuongdan_select" class="form-control select2"></select></div><div class="form-check"><input type="checkbox" class="form-check-input" id="modal_hoatdong_check"><label class="form-check-label" for="modal_hoatdong_check">Sử dụng nhóm</label></div>';
       $("#modal_body").append(html);
       $.each(res.kythuctap, function(idx, val){
         $('#modal_kythuctap_select').append('<option value="'+val.id+'">'+moment(val.ngay, 'YYYY-MM-DD').format('DD/MM/YYYY')+'</option>');
       });
+      $('#modal_kythuctap_select').val(id_ktt);
       $.each(res.detai, function(idx, val){
         $('#modal_detai_select').append('<option value="'+val.id+'">'+val.ten+'</option>');
       });
+      $('#modal_detai_select').val(id_dtai);
       $.each(res.nguoihuongdan, function(idx, val){
         $('#modal_nguoihuongdan_select').append('<option value="'+val.id+'">'+val.hoten+'</option>');
       });
-      
-      if (res.xoa == 0) {
+      $('#modal_nguoihuongdan_select').val(id_nhd);
+      if (xoa == 0) {
         $("#modal_hoatdong_check").prop("checked", true);
       } else {
         $("#modal_hoatdong_check").prop("checked", false);

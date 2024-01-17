@@ -564,6 +564,19 @@ async def get_ds_sinh_vien_by_username_route(kythuctap: str, token: str = Cookie
             pass
     return RedirectResponse('/login')
 
+@app.get('/get_list_ky_hoc_tap_for_trang_danh_gia_sv')
+async def get_list_ky_hoc_tap_for_trang_danh_gia_sv(token: str = Cookie(None)):
+    if token:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            username = payload.get("sub")
+            if username:
+                return get_list_ky_hoc_tap_for_trang_danh_gia_sv_controller()
+        except jwt.PyJWTError:
+            pass
+    return RedirectResponse('/login')
+
+
 @app.get('/get_chi_tiet_danh_gia_sv_by_id')
 async def get_chi_tiet_danh_gia_sv_by_id_route(id: str, token: str = Cookie(None)):
     if token:

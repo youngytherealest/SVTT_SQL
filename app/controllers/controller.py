@@ -150,3 +150,6 @@ def update_nhom_thuc_tap_by_sv_id_controller(idsinhvien: int, idnhom: int):
 
 def get_dssv_da_danh_gia_by_nguoi_huong_dan_controller(username: str, kythuctap: int):
     return get_dssv_da_danh_gia_by_nguoi_huong_dan(username=username, kythuctap=kythuctap)
+
+def get_list_ky_hoc_tap_for_trang_danh_gia_sv_controller():
+    return get_list_ky_hoc_tap_for_trang_danh_gia_sv()

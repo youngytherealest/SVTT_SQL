@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   {% include 'header.html' ignore missing %}
-  <title>Đánh giá sinh viên | HTQL SVTT</title>
+  <title>Trường | HTQL SVTT</title>
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -17,12 +17,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Đánh giá sinh viên</h1>
+            <h1>Trường</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Đánh giá sinh viên</li>
+              <li class="breadcrumb-item active">Trường</li>
             </ol>
           </div>
         </div>
@@ -34,31 +34,21 @@
       <!-- Map card -->
       <div class="card">
         <div class="card-header border-0 rows">
-          <h3 class="card-title col-lg-9">
+          <h3 class="card-title col-lg-3">
             <i class="fa-solid fa-list-ol"></i>
-            Danh sách sinh viên hướng dẫn  
+            Danh sách trường  
           </h3>
-          <button class="btn btn-primary btn-xs ms-auto" id="uploadBtn"><i class="fa-solid fa-file-excel"></i> Import file excel</button>
-          <button class="btn btn-success btn-xs ms-auto" id="downloadBtn"><i class="fa-solid fa-file-zipper"></i> Download đánh giá</button>
-          <input type="file" id="fileInput" style="display: none;">
-          <div class="col-lg-3" style="margin-bottom: -30px; margin-top: 10px;">
-            <label for="filter_kythuctap">Chọn kỳ thực tập</label>
-            <select name="filter_kythuctap" id="filter_kythuctap" class="form-control select2">
-              <option value="-1" selected>---Tất cả kỳ thực tập---</option>
-            </select>
-          </div>
+          <button class="btn btn-success btn-s ms-auto" id="themtruong_btn" style="float: right;"><i class="fa-solid fa-plus"></i> Thêm trường</button>
         </div>
         <div class="card-body">
-          <table class="table table-bordered table-hover" id="dashboard_bangdssv">
+          <table class="table table-bordered table-hover" id="bangdstruong">
             <thead>
               <tr>
-                <th scope="col" style="text-align: center;">MSSV</th>
-                <th scope="col" style="text-align: center;">Họ tên</th>
-                <th scope="col" style="text-align: center;">Giới tính</th>
-                <th scope="col" style="text-align: center;">Chuyên ngành</th>
-                <th scope="col" style="text-align: center;">Trường</th>
+                <th scope="col" style="text-align: center;">ID</th>
+                <th scope="col" style="text-align: center; width: 25%;">Tên trường</th>
+                <th scope="col" style="text-align: center;">Ký hiệu</th>
                 <th scope="col" style="text-align: center;">Trạng thái</th>
-                <th scope="col" style="text-align: center;">Thao tác</th>
+                <th scope="col" style="text-align: center; width: 12%;">Thao tác</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -80,9 +70,11 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- date-range-picker -->
+<!-- InputMask -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/inputmask/jquery.inputmask.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
@@ -95,7 +87,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js" integrity="sha512-OQlawZneA7zzfI6B1n1tjUuo3C5mtYuAWpQdg+iI9mkDoo7iFzTqnQHf+K5ThOWNJ9AbXL4+ZDwH7ykySPQc+A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css" integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="dist/js/pages/student_review.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="dist/js/pages/dmtruong.js"></script>
 </body>
 </html>

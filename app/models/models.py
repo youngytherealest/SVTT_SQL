@@ -31,6 +31,13 @@ def get_all_sinh_vien():
         return result
     except Exception as e:
         return e
+
+def get_all_list_sinh_vien():
+    try:
+        result = cursor.execute("EXEC GetDSSV").fetchall()
+        return result
+    except Exception as e:
+        return e
     
 def count_all_sinh_vien():
     try:
@@ -87,6 +94,28 @@ def get_all_de_tai_thuc_tap():
         return [{'id': i[0], 'ten': i[1], 'mota': i[2], 'xoa': i[3]} for i in result.fetchall()]
     except Exception as e:
         return e
+    
+def get_all_truong():
+    try:
+        result = cursor.execute("SELECT * FROM Truong")
+        return [{'id': i[0], 'ten': i[1], 'kyhieu': i[2]} for i in result.fetchall()]
+    except Exception as e:
+        return e
+
+def get_all_nganh():
+    try:
+        result = cursor.execute("SELECT * FROM Nganh")
+        return [{'id': i[0], 'ten': i[1], 'kyhieu': i[2]} for i in result.fetchall()]
+    except Exception as e:
+        return e
+
+def get_all_nguoi_huong_dan():
+    try:
+        result = cursor.execute("SELECT * FROM NguoiHuongDan")
+        return [{'id': i[0], 'ten': i[1]} for i in result.fetchall()]
+    except Exception as e:
+        return e
+
 
 def get_chi_tiet_de_tai_by_id(id: str):
     try:
@@ -134,6 +163,22 @@ def get_all_ky_thuc_tap():
         return data
     except Exception as e:
         return e
+
+def get_all_truong():
+    try:
+        result = cursor.execute("SELECT * FROM TRUONG WHERE isDeleted != 2").fetchall()
+        data = [{'id': i[0], 'tentruong': i[1], 'kyhieu': i[2], 'trangthai': i[3]} for i in result]
+        return data
+    except Exception as e:
+        return e
+    
+def get_all_nganh_by_id_truong(id: str):
+    try:
+        result = cursor.execute("EXEC GetNganhByID ?", id).fetchall()
+        data = [{'id': i[0], 'tennganh': i[1], 'kyhieu': i[2], 'trangthai': i[3], 'id_truong': i[4], 'tentruong': i[5]} for i in result]
+        return data
+    except Exception as e:
+        return e
     
 def get_chi_tiet_ky_thuc_tap_by_id(id: str):
     try:
@@ -141,10 +186,40 @@ def get_chi_tiet_ky_thuc_tap_by_id(id: str):
         return {'id': result[0], 'ngaybatdau': result[1], 'ngayketthuc': result[2], 'xoa': result[3]}
     except Exception as e:
         return e
+
+def get_chi_tiet_truong_by_id(id: str):
+    try:
+        result = cursor.execute("EXEC GetChiTietTruongByID ?", id).fetchone()
+        return {'id': result[0], 'tentruong': result[1], 'kyhieu': result[2], 'xoa': result[3]}
+    except Exception as e:
+        return e
+
+def get_chi_tiet_nganh_by_id(id: str):
+    try:
+        result = cursor.execute("EXEC GetChiTietNganhByID ?", id).fetchone()
+        return {'id': result[0], 'tennganh': result[1], 'kyhieu': result[2], 'xoa': result[3], 'id_truong': result[4]}
+    except Exception as e:
+        return e
     
 def update_chi_tiet_ky_thuc_tap_by_id(id: str, ngaybatdau: str, ngayketthuc: str, isDeleted: int):
     try:
         result = cursor.execute("EXEC UpdateChiTietKyThucTapByID ?, ?, ?, ?", id, ngaybatdau, ngayketthuc, isDeleted)
+        conn.commit()
+        return True
+    except Exception as e:
+        return e
+    
+def update_chi_tiet_truong_by_id(id: str, tentruong: str, kyhieu: str, isDeleted: int):
+    try:
+        result = cursor.execute("EXEC UpdateChiTietTruongByID ?, ?, ?, ?", id, tentruong, kyhieu, isDeleted)
+        conn.commit()
+        return True
+    except Exception as e:
+        return e
+    
+def update_chi_tiet_nganh_by_id(id: str, tentruong: str, kyhieu: str, isDeleted: int, id_truong: int):
+    try:
+        result = cursor.execute("EXEC UpdateChiTietNganhByID ?, ?, ?, ?, ?", id, tentruong, kyhieu, isDeleted, id_truong)
         conn.commit()
         return True
     except Exception as e:
@@ -158,9 +233,41 @@ def them_ky_thuc_tap(ngaybatdau: str, ngayketthuc: str, isDeleted: int):
     except Exception as e:
         return e
     
+def them_truong(tentruong: str, kyhieu: str, isDeleted: int):
+    try:
+        result = cursor.execute("EXEC InsertTruong ?, ?, ?", tentruong, kyhieu, isDeleted)
+        conn.commit()
+        return True
+    except Exception as e:
+        return e
+
+def them_nganh(tentruong: str, kyhieu: str, isDeleted: int, id_truong: int):
+    try:
+        result = cursor.execute("EXEC InsertNganh ?, ?, ?, ?", tentruong, kyhieu, isDeleted, id_truong)
+        conn.commit()
+        return True
+    except Exception as e:
+        return e
+    
 def update_xoa_ky_thuc_tap_by_id(id: str):
     try:
         result = cursor.execute("EXEC UpdateXoaKyThucTapByID ?", id)
+        conn.commit()
+        return True
+    except Exception as e:
+        return e
+    
+def update_xoa_truong_by_id(id: str):
+    try:
+        result = cursor.execute("EXEC UpdateXoaTruongByID ?", id)
+        conn.commit()
+        return True
+    except Exception as e:
+        return e
+
+def update_xoa_nganh_by_id(id: str):
+    try:
+        result = cursor.execute("EXEC UpdateXoaNganhByID ?", id)
         conn.commit()
         return True
     except Exception as e:
@@ -253,6 +360,14 @@ def get_ds_sinh_vien_by_username(username: str, kythuctap: str):
         return [{'id': i[0], 'mssv': i[1], 'hoten': i[2], 'gioitinh': 'Nam' if i[3]==1 else 'Nữ', 'nganh': i[4], 'truong': i[5], 'trangthai': i[6]} for i in result]
     except Exception as e:
         return e
+
+def get_ds_sinh_vien_by_id(kythuctap: str, detai: str, nguoihuongdan: str):
+    try:
+        result = cursor.execute("EXEC GetDSSV ?,?,?", kythuctap, detai, nguoihuongdan)
+        return result
+    except Exception as e:
+        return e
+    
 def get_list_ky_hoc_tap_for_trang_danh_gia_sv():
     try:
         ktt_obj = cursor.execute("SELECT ID, NgayBatDau, NgayKetThuc FROM KyThucTap WHERE isDeleted != 2")
@@ -266,6 +381,13 @@ def get_chi_tiet_danh_gia_sv_by_id(id: str):
     try:
         i = cursor.execute("EXEC GetChiTietDanhGiaSVByID ?", id).fetchone()
         return {'ythuckyluat_number': i[3], 'ythuckyluat_text': i[4], 'tuanthuthoigian_number': i[5], 'tuanthuthoigian_text': i[6], 'kienthuc_number': i[7], 'kienthuc_text': i[8], 'kynangnghe_number': i[9], 'kynangnghe_text': i[10], 'khanangdoclap_number': i[11], 'khanangdoclap_text': i[12], 'khanangnhom_number': i[13], 'khanangnhom_text': i[14], 'khananggiaiquyetcongviec_number': i[15], 'khananggiaiquyetcongviec_text': i[16], 'danhgiachung_number': i[17]}
+    except Exception as e:
+        return e
+
+def get_chi_tiet_sv_by_id(id: str):
+    try:
+        i = cursor.execute("EXEC GetChiTietSVByID ?", id).fetchone()
+        return {'mssv': i[1], 'hoten': i[2], 'gioitinh': i[3], 'sdt': i[4], 'email': i[5], 'diachi': i[6], 'malop': i[7], 'matruong': i[8], 'khoa': i[10], 'manhomhuongdan': i[11], 'luuy': i[12], 'id_nganh': i[13], 'id_truong': i[14], 'id_nhd': i[15], 'id_detai': i[16], 'id_ktt': i[17]}
     except Exception as e:
         return e
     
@@ -285,6 +407,15 @@ def update_danh_gia_sv_by_mssv(mssv: str, ythuckyluat_number: float, ythuckyluat
     except Exception as e:
         return e
 
+def xoa_sinh_vien_by_sv_id(idsinhvien: int):
+    try:
+        result = cursor.execute("EXEC XoaSVByID ?", idsinhvien)
+        r = result.fetchone()[0]
+        cursor.commit()
+        return r
+    except Exception as e:
+        return e
+    
 def get_id_nhom_by_sv_id(id: str):
     try:
         i = cursor.execute("EXEC GetIDNhomBySVID ?", id).fetchone()
@@ -295,7 +426,7 @@ def get_id_nhom_by_sv_id(id: str):
 def get_ds_nhom_chua_co_cong_viec():
     try:
         result = cursor.execute("EXEC GetDSNhomChuaCoCongViec")
-        data = [{'id': i[0], 'ngaybatdau': i[3], 'tendetai': i[5], 'idcongviec': i[7]} for i in result]
+        data = [{'id': i[0], 'ngaybatdau': i[3], 'tendetai': i[5], 'idcongviec': i[7], 'tennhom': i[8]} for i in result]
         return data
     except Exception as e:
         return e
